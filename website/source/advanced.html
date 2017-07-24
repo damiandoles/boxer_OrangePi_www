@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang=''>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/menu.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="scripts/menu.js" type="text/javascript"></script>
+<script src="scripts/scripts.js" type="text/javascript"></script>
+<!--Full repo and tutorial https://github.com/kripken/sql.js -->
+<script async src="scripts/sql.js"></script>
+
+<title>Boxer Web API</title>
+</head>
+
+<body>
+    <div class="flex-container">
+        <header>
+            <h1>Boxer Web API</h1>
+        </header>
+
+        <nav class="nav">
+            <div id="leftmenu_main">    
+                <div id='cssmenu'>
+                    <ul>
+                        <li class='active'><a href='index.html'><span>Home</span></a></li>
+                        <li class='has-sub'><a href='#'><span>Settings</span></a>
+                        <ul>
+                            <li><a href='temp_fan.html'><span>Temperature & FAN control</span></a></li>
+                            <li><a href='lamp.html'><span>Lamp control</span></a></li>
+                            <li><a href='irrigation.html'><span>Irrigation control</span></a></li>
+                            <li><a href='ph_calib.html'><span>PH probe calibration</span></a></li>
+                        <li class='last'><a href='advanced.html'><span>Advanced</span></a></li>
+                        </ul>
+                        </li>
+                        <li class='has-sub'><a href='info.html'><span>Information</span></a></li>
+                        <li class='has-sub'><a href='about.html'><span>About</span></a></li>
+                        <li class='last'><a href='contact.html'><span>Contact</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <form class="form">	
+            <fieldset>
+            <legend id="legendNetwork">Network</legend>
+                <div class="levelingTable">
+                    <div>
+                        <div class="levelingCol"><label id="labelDHCP">Dynamic allocation of IP address:</label></div>
+                        <div class="levelingCol">
+                            <select id="N_01" onchange="NetworkSettings()">
+                                <option value="0" id="selectDhcpOn">On</option>
+                                <option value="1" id="selectDhcpOff">Off</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="syncLvl1" style="display: none;">
+
+                    </div>
+                    <div id="syncLvl2" style="display: none;">
+                        <div>
+                                <div class="levelingCol"><label id="labelIP">IP Address:</label></div>
+                                <div class="levelingCol"><input id="D_000" size="16" type="text"></div>
+                                <div class="levelingCol"><span class="edError" id="D_000Error">&nbsp;</span></div>
+                        </div>
+                        <div>
+                                <div class="levelingCol"><label id="labelMask">Subnet mask:</label></div>
+                                <div class="levelingCol"><input id="D_001" size="16" type="text"></div>
+                                <div class="levelingCol"><span class="edError" id="D_001Error">&nbsp;</span></div>
+                        </div>
+                        <div>
+                                <div class="levelingCol"><label id="labelGate">Gateway:</label></div>
+                                <div class="levelingCol"><input id="D_002" size="16" type="text"></div>
+                                <div class="levelingCol"><span class="edError" id="D_002Error">&nbsp;</span></div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>	
+        </form>
+
+        <footer>Copyright &copy; damiandoles</footer>
+        </div>
+    </body>
+</html>

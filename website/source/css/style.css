@@ -99,3 +99,27 @@ label {
     display: inline-block; 
     font-family: 'Ubuntu', sans-serif;
 }
+
+#labelStateOn, #labelStateOff {
+    float: none; 
+    text-align: right; 
+    width: 180px; 
+    display: inline-block; 
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#labelDHCP{
+    float: none; 
+    text-align: right; 
+    width: 210px; 
+    display: inline-block; 
+    font-family: 'Ubuntu', sans-serif;
+}
+select { 
+    color: #781351; 
+    background: #fee3ad; 
+    border: 1px solid #781351; 
+    vertical-align: middle; 
+    margin-bottom: 3px; 
+    margin-left: 3px;
+}
