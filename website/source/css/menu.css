@@ -41,7 +41,7 @@
 }
 #cssmenu > ul > li:first-child > a {
   padding: 15px 10px;
-  background: url(images/pattern.png) top left repeat;
+  background: top left repeat;
   border: none;
   border-top: 1px solid #818176;
   -webkit-border-radius: 3px 3px 0 0;
@@ -80,7 +80,7 @@
 #cssmenu > ul > li > a {
   font-size: 14px;
   display: block;
-  background: url(images/pattern.png) top left repeat;
+  background: top left repeat;
   color: #ffffff;
   border: 1px solid #ba2f14;
   border-top: none;
@@ -100,10 +100,10 @@
   border-bottom: none;
 }
 #cssmenu > ul > li.has-sub > a span {
-  background: url(images/icon_plus.png) 96% center no-repeat;
+  background: 96% center no-repeat;
 }
 #cssmenu > ul > li.has-sub.active > a span {
-  background: url(images/icon_minus.png) 96% center no-repeat;
+  background: 96% center no-repeat;
 }
 /* Sub menu */
 #cssmenu ul ul {
