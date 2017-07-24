@@ -22,6 +22,7 @@
 header {
     background: #45463d;
     color:white;
+    font-family: 'Ubuntu', sans-serif;
 }
 footer {
     background: #45463d;
@@ -57,7 +58,7 @@ body {
 @media all and (min-width: 768px) {
     .nav {text-align:left;-webkit-flex: 1 auto;flex: 0 1 200px;-webkit-order:1;order:1;}
     .form {background: #eee; -webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
-    footer {-webkit-order:3;order:3;}
+    footer {-webkit-order:3;order:3; font-family: 'Ubuntu', sans-serif;}
 }
 
 fieldset {
@@ -96,4 +97,5 @@ label {
     width: 180px; 
     margin-right: 0.5em; 
     display: inline-block; 
+    font-family: 'Ubuntu', sans-serif;
 }
