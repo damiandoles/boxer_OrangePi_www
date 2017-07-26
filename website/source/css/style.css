@@ -108,13 +108,6 @@ label {
     font-family: 'Ubuntu', sans-serif;
 }
 
-#labelDHCP{
-    float: none; 
-    text-align: right; 
-    width: 210px; 
-    display: inline-block; 
-    font-family: 'Ubuntu', sans-serif;
-}
 select { 
     color: #781351; 
     background: #fee3ad; 

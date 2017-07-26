@@ -56,23 +56,27 @@
                             </select>
                         </div>
                     </div>
-                    <div id="syncLvl1" style="display: none;">
+                    <div id="Lvl1" style="display: none;">
                         <div>
                             <div class="levelingCol"><label id="labelTempMax">Temp max [°C]:</label></div>
-                            <div class="levelingCol"><input type="text" size=1 maxlength="4"></div>
+                            <div class="levelingCol"><input id="T_02" type="text" size=1 maxlength="4"></div>
+                            <div class="levelingCol"><span class="edError" id="T_02Error">&nbsp;</span></div>
                         </div>
                     </div>
-                    <div id="syncLvl2" style="display: none;">
+                    <div id="Lvl2" style="display: none;">
                         <div>
-                            <div class="levelingCol"><label id="labelFan">Push FAN power [%]:</label></div>
-                            <div class="levelingCol"><input type="text" size=1 maxlength="3"></div>
+                            <div class="levelingCol"><label id="labelPushFan">Push FAN power [%]:</label></div>
+                            <div class="levelingCol"><input id="T_03" type="text" size=1 maxlength="3"></div>
+                            <div class="levelingCol"><span class="edError" id="T_03Error">&nbsp;</span></div>
                         </div>
                         <div>
-                            <div class="levelingCol"><label id="labelFan">Pull FAN power [%]:</label></div>
-                            <div class="levelingCol"><input type="text" size=1 maxlength="3"></div>
+                            <div class="levelingCol"><label id="labelPullFan">Pull FAN power [%]:</label></div>
+                            <div class="levelingCol"><input id="T_04" type="text" size=1 maxlength="3"></div>
+                            <div class="levelingCol"><span class="edError" id="T_04Error">&nbsp;</span></div>
                         </div>
                     </div>
                 </div>
+                <input type="button" style="margin-left:0px;" value="Save" id="SaveTempFanButton" onClick="SaveTempFanSettings()"><font color="green" id="SaveTempFanLabel">&nbsp;</font>
             </fieldset>	
         </form>
 

@@ -46,13 +46,34 @@
         <form class="form">	
             <fieldset>
             <legend id="legendIrrigationSettings">Irrigation settings</legend>
-
+                <div class="levelingTable">
+                    <div>
+                        <div class="levelingCol"><label id="labelMode">Mode:</label></div>
+                        <div class="levelingCol">
+                            <select id="I_01" onchange="IrrigationMode()">
+                                <option value="0" id="selectIrrMode1">Manual</option>
+                                <option value="1" id="selectIrrMode2">Auto (soil moisture)</option>
+                                <option value="2" id="selectIrrMode3">Auto (timer)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <div class="levelingCol"><label id="labelWater">Amount of water:</label></div>
+                            <div class="levelingCol"><input id="I_02" size="5" type="text"></div>
+                            <div class="levelingCol"><span class="edError" id="I_02Error">&nbsp;</span></div>
+                        </div>
+                        <div id="Lvl1" style="display: none;">
+                            <div>
+                                <div class="levelingCol"><label id="labelIrrigationFrequency">Irrigation frequency [days]:</label></div>
+                                <div class="levelingCol"><input id="I_03" size="5" type="text"></div>
+                                <div class="levelingCol"><span class="edError" id="I_03Error">&nbsp;</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="button" style="margin-left:0px;" value="Save" id="SaveIrrigationButton" onClick="SaveIrrigationSettings()"><font color="green" id="SaveIrrigationLabel">&nbsp;</font>            
             </fieldset>	
-            
-            <fieldset>
-            <legend id="legendIrrigationInfo">Irrigation info</legend>
-
-            </fieldset>
         </form>
 
         <footer>Copyright &copy; damiandoles</footer>

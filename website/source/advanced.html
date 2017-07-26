@@ -48,36 +48,50 @@
             <legend id="legendNetwork">Network</legend>
                 <div class="levelingTable">
                     <div>
-                        <div class="levelingCol"><label id="labelDHCP">Dynamic allocation of IP address:</label></div>
+                        <div class="levelingCol"><label id="labelDHCP">Dynamic IP (DHCP):</label></div>
                         <div class="levelingCol">
-                            <select id="N_01" onchange="NetworkSettings()">
+                            <select id="N_01" onchange="DhcpMode()">
                                 <option value="0" id="selectDhcpOn">On</option>
                                 <option value="1" id="selectDhcpOff">Off</option>
                             </select>
                         </div>
                     </div>
-                    <div id="syncLvl1" style="display: none;">
-
+                    <div>
+                        <div class="levelingCol"><label id="labelIP">IP Address:</label></div>
+                        <div class="levelingCol"><input id="N_02" size="16" type="text"></div>
+                        <div class="levelingCol"><span class="edError" id="N_02Error">&nbsp;</span></div>
                     </div>
-                    <div id="syncLvl2" style="display: none;">
-                        <div>
-                                <div class="levelingCol"><label id="labelIP">IP Address:</label></div>
-                                <div class="levelingCol"><input id="D_000" size="16" type="text"></div>
-                                <div class="levelingCol"><span class="edError" id="D_000Error">&nbsp;</span></div>
-                        </div>
-                        <div>
-                                <div class="levelingCol"><label id="labelMask">Subnet mask:</label></div>
-                                <div class="levelingCol"><input id="D_001" size="16" type="text"></div>
-                                <div class="levelingCol"><span class="edError" id="D_001Error">&nbsp;</span></div>
-                        </div>
-                        <div>
-                                <div class="levelingCol"><label id="labelGate">Gateway:</label></div>
-                                <div class="levelingCol"><input id="D_002" size="16" type="text"></div>
-                                <div class="levelingCol"><span class="edError" id="D_002Error">&nbsp;</span></div>
-                        </div>
+                    <div>
+                        <div class="levelingCol"><label id="labelMask">Subnet mask:</label></div>
+                        <div class="levelingCol"><input id="N_03" size="16" type="text"></div>
+                        <div class="levelingCol"><span class="edError" id="N_03Error">&nbsp;</span></div>
+                    </div>
+                    <div>
+                        <div class="levelingCol"><label id="labelGate">Gateway:</label></div>
+                        <div class="levelingCol"><input id="N_04" size="16" type="text"></div>
+                        <div class="levelingCol"><span class="edError" id="N_04Error">&nbsp;</span></div>
                     </div>
                 </div>
+                <input type="button" style="margin-left:0px;" value="Save" id="SaveNetworkSettButton" onClick="SaveNetworkSettings()"><font color="green" id="SaveNetworkSettLabel">&nbsp;</font>
             </fieldset>	
+            
+            <fieldset>
+                <legend id="legendDefSettings">Default settings</legend>
+                <div class="levelingTable">
+                    <div>
+                        <input type="button" style="margin-left:0px;" value="Restore default settings" id="RestoreSettingsButton" onClick="ResetFactorySettings()">
+                    </div>
+                </div>  
+            </fieldset>
+            
+            <fieldset>
+                <legend id="legendResetDevice">Reset device</legend>
+                <div class="levelingTable">
+                    <div>
+                        <input type="button" style="margin-left:0px;" value="Reset device" id="ResetDeviceButton" onClick="ResetDevice()">
+                    </div>
+                </div>  
+            </fieldset>
         </form>
 
         <footer>Copyright &copy; damiandoles</footer>

@@ -7,36 +7,89 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
 {
-	var tempMode = document.getElementById("T_01").value;
-	var syncLvl1 = document.getElementById("syncLvl1");
-	var syncLvl2 = document.getElementById("syncLvl2");
-        
-        if (tempMode == 0)
-        {
-            syncLvl1.style.display = 'none';
-            syncLvl2.style.display = 'block';
-        }   
-        else
-        {
-            syncLvl1.style.display = 'block';
-            syncLvl2.style.display = 'none';
-        }
-}
+    var tempMode = document.getElementById("T_01").value;
+    var Lvl1 = document.getElementById("Lvl1");
+    var Lvl2 = document.getElementById("Lvl2");
 
-function NetworkSettings()
+    if (tempMode == 0)
+    {
+        Lvl1.style.display = 'none';
+        Lvl2.style.display = 'block';
+    }   
+    else
+    {
+        Lvl1.style.display = 'block';
+        Lvl2.style.display = 'none';
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function DhcpMode()
 {
-	var dchpMode = document.getElementById("N_01").value;
-	var syncLvl1 = document.getElementById("syncLvl1");
-	var syncLvl2 = document.getElementById("syncLvl2");
-        
-        if (dchpMode == 0)
-        {
-            syncLvl1.style.display = 'block';
-            syncLvl2.style.display = 'none';
-        }   
-        else
-        {
-            syncLvl1.style.display = 'none';
-            syncLvl2.style.display = 'block';
-        }
+    var dchpMode    = document.getElementById("N_01").value;
+    var ipAddr      = document.getElementById("N_02");
+    var subnetMask  = document.getElementById("N_03");
+    var gateway     = document.getElementById("N_04");
+
+    if (dchpMode == 0)
+    {
+        ipAddr.disabled     = true;
+        subnetMask.disabled = true;
+        gateway.disabled    = true;
+    }   
+    else
+    {
+        ipAddr.disabled     = false;
+        subnetMask.disabled = false;
+        gateway.disabled    = false;
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function IrrigationMode()
+{
+    var irrigationMode = document.getElementById("I_01").value;
+    var Lvl1 = document.getElementById("Lvl1");
+    
+    if (irrigationMode == 2)
+    {
+        Lvl1.style.display = 'block';
+    }
+    else
+    {
+        Lvl1.style.display = 'none';
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function ResetFactorySettings()
+{
+    alert("Settings has been reset to the default!");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function ResetDevice()
+{
+    alert("Device has been reset!");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function SaveNetworkSettings()
+{
+    alert("Network settings saved!");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function SaveLightSettings()
+{
+    alert("Light settings saved!");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function SaveTempFanSettings()
+{
+    alert("Temp/Fan settings saved!");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function SaveIrrigationSettings()
+{
+    alert("Irrigation settings saved!");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function CalibrateProbe()
+{
+    alert("Calibration started!");
 }

@@ -46,23 +46,24 @@
         <form class="form">	
             <fieldset>
             <legend id="legendPhCalib">PH probe calibration</legend>
-                    <div class="levelingTable">
-                        <div>
-                                <div class="levelingCol"><label id="labelPhCalib">PH probe to calibrate: </label></div>
-                        </div>
-                        <div>
-                                <div class="levelingCol"><label id="labelWaterProbe">Water probe</label></div>
-                                <div class="levelingCol">
-                                    <input id="P_01" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
-                                </div>
-                        </div>
-                        <div>
-                                <div class="levelingCol"><label id="labelSoilProbe">Soil probe</label></div>
-                                <div class="levelingCol">
-                                    <input id="P_02" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
-                                </div>
-                        </div>
+                <div class="levelingTable">
+                    <div>
+                            <div class="levelingCol"><label id="labelPhCalib">PH probe to calibrate: </label></div>
                     </div>
+                    <div>
+                            <div class="levelingCol"><label id="labelWaterProbe">Water probe</label></div>
+                            <div class="levelingCol">
+                                <input id="P_01" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                            </div>
+                    </div>
+                    <div>
+                            <div class="levelingCol"><label id="labelSoilProbe">Soil probe</label></div>
+                            <div class="levelingCol">
+                                <input id="P_02" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                            </div>
+                    </div>
+                </div>
+                <input type="button" style="margin-left:0px;" value="Calibrate selected probe" id="CalibButton" onClick = "CalibrateProbe()"><font color="green" id="CalibLabel">&nbsp;</font>
             </fieldset>	
         </form>
 
