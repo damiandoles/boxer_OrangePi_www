@@ -1,25 +1,22 @@
 <!doctype html>
 <html lang=''>
 <head>
-<meta charset='utf-8'>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="css/menu.css" />
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
-<script src="scripts/menu.js" type="text/javascript"></script>
-<script src="scripts/scripts.js" type="text/javascript"></script>
-<!--Full repo and tutorial https://github.com/kripken/sql.js -->
-<script async src="scripts/sql.js"></script>
-
-<title>Boxer Web API</title>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="scripts/menu.js" type="text/javascript"></script>
+    <script src="scripts/scripts.js" type="text/javascript"></script>
+    <!--Full repo and tutorial https://github.com/kripken/sql.js -->
+    <script async src="scripts/sql.js"></script>
+    <title>Boxer Web API</title>
 </head>
 
 <body>
     <div class="flex-container">
-        <header>
-            <h1>Boxer Web API</h1>
-        </header>
+        <header> <h1>Boxer Web API</h1></header>
 
         <nav class="nav">
             <div id="leftmenu_main">    
@@ -48,34 +45,34 @@
             <legend id="legendLightSettings">Light settings</legend>
                 <div class="levelingTable">
                     <div>
-                            <div class="levelingCol"><label id="labelTimeOn">Time on [h]:</label></div>
-                            <div class="levelingCol"><input id="L_01" type="text" size=3 maxlength="2"></div>
-                            <div class="levelingCol"><span class="edError" id="I_01Error">&nbsp;</span></div>
+                        <div class="levelingCol"><label id="labelTimeOn">Time on [h]:</label></div>
+                        <div class="levelingCol"><input id="L_01" type="text" size=3 maxlength="2"></div>
+                        <div class="levelingCol"><span class="edError" id="I_01Error">&nbsp;</span></div>
                     </div>
                     <div>
-                            <div class="levelingCol"><label id="labelTimeOff">Time off [h]:</label></div>
-                            <div class="levelingCol"><input id="L_02" type="text" size=3 maxlength="2"></div>
-                            <div class="levelingCol"><span class="edError" id="I_02Error">&nbsp;</span></div>
+                        <div class="levelingCol"><label id="labelTimeOff">Time off [h]:</label></div>
+                        <div class="levelingCol"><input id="L_02" type="text" size=3 maxlength="2"></div>
+                        <div class="levelingCol"><span class="edError" id="I_02Error">&nbsp;</span></div>
                     </div>
                     <div>
-                            <div class="levelingCol"><label id="labelInitState">Initial state:</label></div>
+                        <div class="levelingCol"><label id="labelInitState">Initial state:</label></div>
                     </div>
                     <div>
-                            <div class="levelingCol"><label id="labelStateOn">on</label></div>
-                            <div class="levelingCol">
-                                <input id="L_03" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
-                            </div>
+                        <div class="levelingCol"><label id="labelStateOn">on</label></div>
+                        <div class="levelingCol">
+                            <input id="L_03" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                        </div>
                     </div>
                     <div>
-                            <div class="levelingCol"><label id="labelStateOff">off</label></div>
-                            <div class="levelingCol">
-                                <input id="L_04" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
-                            </div>
+                        <div class="levelingCol"><label id="labelStateOff">off</label></div>
+                        <div class="levelingCol">
+                            <input id="L_04" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                        </div>
                     </div>
                     <div>
-                            <div class="levelingCol"><label id="labelTurnOnOffTime">Turn on/off time:</label></div>
-                            <div class="levelingCol"><input id="L_05" type="text" size=4 maxlength="6"></div>
-                            <div class="levelingCol"><span class="edError" id="I_05Error">&nbsp;</span></div>
+                        <div class="levelingCol"><label id="labelTurnOnOffTime">Turn on/off time:</label></div>
+                        <div class="levelingCol"><input id="L_05" type="text" size=4 maxlength="6"></div>
+                        <div class="levelingCol"><span class="edError" id="I_05Error">&nbsp;</span></div>
                     </div>
                 </div>
                 <input type="button" style="margin-left:0px;" value="Save" id="SaveLightButton" onClick="SaveLightSettings()"><font color="green" id="SaveLightLabel">&nbsp;</font>
@@ -85,12 +82,12 @@
             <legend id="legendLightInfo">Light info</legend>
                 <div class="levelingTable">
                     <div>
-                            <div class="levelingCol"><label id="labelLightCounter">Light counter:</label></div>
-                            <div class="levelingCol"><input disabled type="text" size=3 maxlength="2"></div>
+                        <div class="levelingCol"><label id="labelLightCounter">Light counter:</label></div>
+                        <div class="levelingCol"><input disabled type="text" size=3 maxlength="2"></div>
                     </div>
                     <div>
-                            <div class="levelingCol"><label id="labelLightIntensity">Light state:</label></div>
-                            <div class="levelingCol"><input disabled type="text" size=3 maxlength="3"></div>
+                        <div class="levelingCol"><label id="labelLightIntensity">Light state:</label></div>
+                        <div class="levelingCol"><input disabled type="text" size=3 maxlength="3"></div>
                     </div>
                 </div>
             </fieldset>	
