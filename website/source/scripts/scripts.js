@@ -198,7 +198,31 @@ function SaveIrrigationSettings()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function CalibrateProbe()
 {
-    alert("Calibration started!");
+    var dataError = false;
+    var waterProbe  = document.getElementById("P_01").checked;
+    var soilProbe = document.getElementById("P_02").checked;
+    
+    if (!waterProbe && !soilProbe)
+    {
+        dataError = true;
+        document.getElementById("phcalibError").innerHTML = "&nbsp;&nbsp;&nbsp;Select one of available probes!!!";
+    }
+    else
+    {
+        document.getElementById("phcalibError").innerHTML = "";
+    }
+    
+    if (!dataError)
+    {
+        if (waterProbe)
+        {
+            alert("Calibration of water probe started!"); 
+        }
+        else
+        {
+            alert("Calibration of soil probe started!"); 
+        }
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function CheckIP(AIP, AAllow00, AAllowFF)
@@ -275,6 +299,30 @@ function LightStateCheckBox()
     else
     {
         stateOn.disabled = false;
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function PhCalibCheckBox()
+{
+    var waterProbe = document.getElementById("P_01");
+    var soilProbe  = document.getElementById("P_02");   
+    
+    if (waterProbe.checked)
+    {
+        soilProbe.disabled = true;
+    }
+    else
+    {
+        soilProbe.disabled = false;
+    }
+    
+    if (soilProbe.checked)
+    {
+        waterProbe.disabled = true;
+    }
+    else
+    {
+        waterProbe.disabled = false;
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -46,17 +46,18 @@
                 <div class="levelingTable">
                     <div>
                             <div class="levelingCol"><label id="labelPhCalib">PH probe to calibrate: </label></div>
+                            <div class="levelingCol"><span class="edError" id="phcalibError">&nbsp;</span></div>
                     </div>
                     <div>
                             <div class="levelingCol"><label id="labelWaterProbe">Water probe</label></div>
                             <div class="levelingCol">
-                                <input id="P_01" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                                <input id="P_01" onclick="PhCalibCheckBox()" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
                             </div>
                     </div>
                     <div>
                             <div class="levelingCol"><label id="labelSoilProbe">Soil probe</label></div>
                             <div class="levelingCol">
-                                <input id="P_02" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                                <input id="P_02" onclick="PhCalibCheckBox()" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
                             </div>
                     </div>
                 </div>
