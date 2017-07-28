@@ -116,3 +116,11 @@ select {
     margin-bottom: 3px; 
     margin-left: 3px;
 }
+
+.edError {
+    color: #f00;
+    font-size: 12px; 
+    font-weight: bold; 
+    width: auto; 
+    float: right;
+}

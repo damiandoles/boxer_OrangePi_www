@@ -77,7 +77,65 @@ function SaveNetworkSettings()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveLightSettings()
 {
-    alert("Light settings saved!");
+    var dataError = false;
+    var timeOn   = parseInt(document.getElementById("L_01").value, 10);
+    var timeOff  = parseInt(document.getElementById("L_02").value, 10);
+    var stateOn  = document.getElementById("L_03").checked;
+    var stateOff = document.getElementById("L_04").checked;
+    var turnOnOffTime = document.getElementById("L_05").value;
+    
+    if (timeOn < 0 || timeOn > 24 || isNaN(timeOn))
+    {
+        dataError = true;
+        document.getElementById("L_01Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use number between 0 and 24!!!";
+    }
+    else
+    {
+        document.getElementById("L_01Error").innerHTML = "";        
+    }
+    
+    if (timeOff < 0 || timeOff > 24 || isNaN(timeOff))
+    {
+        dataError = true;
+        document.getElementById("L_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use number between 0 and 24!!!";
+    }
+    else
+    {
+        document.getElementById("L_02Error").innerHTML = ""; 
+    }
+    
+    if (!stateOn && !stateOff)
+    {
+        dataError = true;
+        document.getElementById("stateError").innerHTML = "&nbsp;&nbsp;&nbsp;Check initial state!!!";
+    }
+    else
+    {
+        document.getElementById("stateError").innerHTML = "";
+    }
+    
+    if (!CheckShortTime(turnOnOffTime))
+    {
+        dataError = true;
+        document.getElementById("L_05Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong turn on/off time!!!";
+    }
+    else
+    {
+        document.getElementById("L_05Error").innerHTML = "";
+    }
+    
+    if (!dataError)
+    {
+        if (timeOn + timeOff === 24)
+        {
+            // zapis do urzadzenia
+            alert("Light settings saved!");
+        }
+        else
+        {
+            alert("Sum of times (on+off) must equal 24 hours!!!");
+        }
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveTempFanSettings()
@@ -128,7 +186,7 @@ function CheckShortTime(ATime)
 {
     if (ATime && ATime !== "")
     {
-        var Pattern = /^(\d{1,2})\:(\d{1,2})$/;
+        var Pattern = /^(\d{1,2}){2}\:(\d{1,2}){2}$/;
         var A = ATime.match(Pattern);
         if ((A) && (A.length == 3) && (A[1] < 24) && (A[2] < 60) )
             return true;
@@ -146,6 +204,30 @@ function OnIndexLoad()
 {
     updateClock();
     IndTID = setInterval('updateClock()', 1000 );
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function LightStateCheckBox()
+{
+    var stateOn  = document.getElementById("L_03");
+    var stateOff = document.getElementById("L_04");   
+    
+    if (stateOn.checked)
+    {
+        stateOff.disabled = true;
+    }
+    else
+    {
+        stateOff.disabled = false;
+    }
+    
+    if (stateOff.checked)
+    {
+        stateOn.disabled = true;
+    }
+    else
+    {
+        stateOn.disabled = false;
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateClock()

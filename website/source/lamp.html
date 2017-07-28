@@ -47,32 +47,33 @@
                     <div>
                         <div class="levelingCol"><label id="labelTimeOn">Time on [h]:</label></div>
                         <div class="levelingCol"><input id="L_01" type="text" size=3 maxlength="2"></div>
-                        <div class="levelingCol"><span class="edError" id="I_01Error">&nbsp;</span></div>
+                        <div class="levelingCol"><span class="edError" id="L_01Error">&nbsp;</span></div>
                     </div>
                     <div>
                         <div class="levelingCol"><label id="labelTimeOff">Time off [h]:</label></div>
                         <div class="levelingCol"><input id="L_02" type="text" size=3 maxlength="2"></div>
-                        <div class="levelingCol"><span class="edError" id="I_02Error">&nbsp;</span></div>
+                        <div class="levelingCol"><span class="edError" id="L_02Error">&nbsp;</span></div>
                     </div>
                     <div>
                         <div class="levelingCol"><label id="labelInitState">Initial state:</label></div>
+                        <div class="levelingCol"><span class="edError" style="margin-left: 58px;" id="stateError">&nbsp;</span></div>
                     </div>
                     <div>
                         <div class="levelingCol"><label id="labelStateOn">on</label></div>
                         <div class="levelingCol">
-                            <input id="L_03" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                            <input id="L_03" onclick="LightStateCheckBox()" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
                         </div>
                     </div>
                     <div>
                         <div class="levelingCol"><label id="labelStateOff">off</label></div>
                         <div class="levelingCol">
-                            <input id="L_04" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                            <input id="L_04" onclick="LightStateCheckBox()" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
                         </div>
                     </div>
                     <div>
                         <div class="levelingCol"><label id="labelTurnOnOffTime">Turn on/off time:</label></div>
                         <div class="levelingCol"><input id="L_05" type="text" size=4 maxlength="6"></div>
-                        <div class="levelingCol"><span class="edError" id="I_05Error">&nbsp;</span></div>
+                        <div class="levelingCol"><span class="edError" id="L_05Error">&nbsp;</span></div>
                     </div>
                 </div>
                 <input type="button" style="margin-left:0px;" value="Save" id="SaveLightButton" onClick="SaveLightSettings()"><font color="green" id="SaveLightLabel">&nbsp;</font>
