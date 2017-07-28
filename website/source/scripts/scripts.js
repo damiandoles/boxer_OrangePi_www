@@ -140,7 +140,55 @@ function SaveLightSettings()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveTempFanSettings()
 {
-    alert("Temp/Fan settings saved!");
+    var dataError = false;
+    var tempCtrlMode  = document.getElementById("T_01").value;
+    var tempMax = parseFloat(document.getElementById("T_02").value, 10);
+    var pushFanPower = parseInt(document.getElementById("T_03").value, 10);
+    var pullFanPower = parseInt(document.getElementById("T_04").value, 10);
+    
+    switch (tempCtrlMode)
+    {
+        case "0":
+            if (isNaN(pushFanPower) || pushFanPower < 0 || pushFanPower > 100)
+            {
+                dataError = true;
+                document.getElementById("T_03Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong power of push FAN! Please select value from 0 to 100%";
+            }
+            else
+            {
+                document.getElementById("T_03Error").innerHTML = "";
+            }
+            
+            if (isNaN(pullFanPower) || pullFanPower < 0 || pullFanPower > 100)
+            {
+                dataError = true;
+                document.getElementById("T_04Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong power of pull FAN! Please select value from 0 to 100%";
+            }
+            else
+            {
+                document.getElementById("T_04Error").innerHTML = "";
+            } 
+            break;
+        case "1":
+            if (isNaN(tempMax) || tempMax < 20 || tempMax > 32)
+            {
+                dataError = true;
+                document.getElementById("T_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong maximum temperature value!!! Please select value from 20°C to 32°C";
+            }
+            else
+            {
+                document.getElementById("T_02Error").innerHTML = "";
+            }
+            break;
+        default:
+            break;
+    }
+    
+    if (!dataError)
+    {
+        // zapis do urzadzenia
+        alert("Temp/Fan settings saved!");
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveIrrigationSettings()
