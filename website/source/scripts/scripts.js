@@ -72,7 +72,63 @@ function ResetDevice()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveNetworkSettings()
 {
-    alert("Network settings saved!");
+    var dataError = false;
+    var dhcpMode  = parseInt(document.getElementById("N_01").value, 10);
+    var ipAddr    = document.getElementById("N_02").value;
+    var mask      = document.getElementById("N_03").value;
+    var gateway   = document.getElementById("N_04").value;
+
+    switch (dhcpMode)
+    {
+        case 0:
+            //wlacz dhcp
+            break;
+            
+        case 1:
+            var ipProper =  ValidateIPaddress(ipAddr);
+            var maskProper =  ValidateIPaddress(mask);
+            var gatewayProper =  ValidateIPaddress(gateway);
+
+            if (!ipProper)
+            {
+                dataError = true;
+                document.getElementById("N_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use proper IP address format (xxx.xxx.xxx.xxx)!";
+            }
+            else
+            {
+                document.getElementById("N_02Error").innerHTML = ""; 
+            }
+            
+            if (!maskProper)
+            {
+                dataError = true;
+                document.getElementById("N_03Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use proper subnet mask format (xxx.xxx.xxx.xxx)!";
+            }
+            else
+            {
+                document.getElementById("N_03Error").innerHTML = "";                
+            }
+            
+            if (!gatewayProper)
+            {
+                dataError = true;
+                document.getElementById("N_04Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use proper gateway format (xxx.xxx.xxx.xxx)!";                
+            }
+            else
+            {
+                document.getElementById("N_04Error").innerHTML = "";
+            }
+            break;
+        
+        default:
+            dataError = true;
+            break;
+    }
+    
+    if (!dataError)
+    {
+        alert("Network settings saved!");
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveLightSettings()
@@ -87,7 +143,7 @@ function SaveLightSettings()
     if (timeOn < 0 || timeOn > 24 || isNaN(timeOn))
     {
         dataError = true;
-        document.getElementById("L_01Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use number between 0 and 24!!!";
+        document.getElementById("L_01Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use number between 0 and 24!";
     }
     else
     {
@@ -97,7 +153,7 @@ function SaveLightSettings()
     if (timeOff < 0 || timeOff > 24 || isNaN(timeOff))
     {
         dataError = true;
-        document.getElementById("L_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use number between 0 and 24!!!";
+        document.getElementById("L_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Use number between 0 and 24!";
     }
     else
     {
@@ -107,7 +163,7 @@ function SaveLightSettings()
     if (!stateOn && !stateOff)
     {
         dataError = true;
-        document.getElementById("stateError").innerHTML = "&nbsp;&nbsp;&nbsp;Check initial state!!!";
+        document.getElementById("stateError").innerHTML = "&nbsp;&nbsp;&nbsp;Check initial state!";
     }
     else
     {
@@ -117,7 +173,7 @@ function SaveLightSettings()
     if (!CheckShortTime(turnOnOffTime))
     {
         dataError = true;
-        document.getElementById("L_05Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong turn on/off time!!!";
+        document.getElementById("L_05Error").innerHTML = "&nbsp;Wrong turn on/off time!";
     }
     else
     {
@@ -133,7 +189,7 @@ function SaveLightSettings()
         }
         else
         {
-            alert("Sum of times (on+off) must equal 24 hours!!!");
+            alert("Sum of times (on+off) must equal 24 hours!");
         }
     }
 }
@@ -173,7 +229,7 @@ function SaveTempFanSettings()
             if (isNaN(tempMax) || tempMax < 20 || tempMax > 32)
             {
                 dataError = true;
-                document.getElementById("T_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong maximum temperature value!!! Please select value from 20°C to 32°C";
+                document.getElementById("T_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong max temp value! Please select value from 20 to 32°C";
             }
             else
             {
@@ -205,7 +261,7 @@ function CalibrateProbe()
     if (!waterProbe && !soilProbe)
     {
         dataError = true;
-        document.getElementById("phcalibError").innerHTML = "&nbsp;&nbsp;&nbsp;Select one of available probes!!!";
+        document.getElementById("phcalibError").innerHTML = "&nbsp;&nbsp;&nbsp;Select one of available probes!";
     }
     else
     {
@@ -225,34 +281,13 @@ function CalibrateProbe()
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-function CheckIP(AIP, AAllow00, AAllowFF)
-{
-    if (AIP && AIP !== "")
-    {
-        var Pattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
-        var A = AIP.match(Pattern);
-        if (A && (A.length == 5) )
-        {
-            for (i = 1; i < 5; i++)	
-                if ( (A[i] < 0) || (A[i] > 255) )
-                    return false;
-
-            if (!AAllow00)
-                if (A[1] == 0 && A[2] == 0 && A[3] == 0 && A[4] == 0)
-                    return false;
-
-            if (!AAllowFF)
-                if (A[1] == 255 && A[2] == 255 && A[3] == 255 && A[4] == 255)
-                    return false;
-
-            return true;
-        }
-    }
-    else 
-    {
-        return false;
-    }
-}
+function ValidateIPaddress(ipaddress) {  
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
+        return (true);  
+    }  
+    else
+        return (false)  
+}  
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function CheckShortTime(ATime)
 {
