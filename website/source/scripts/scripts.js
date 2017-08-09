@@ -307,9 +307,21 @@ function SetIndexTimers()
     IndTID = setInterval('updateClock()', 1000 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+function GetMeasurements()
+{
+    var reader = new FileReader();
+    reader.readAsArrayBuffer('/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db');
+    
+    var sql = require('scripts/sql.js');
+    var db = new sql.Database(reader);
+    var res = db.exec("SELECT * FROM BASIC");  
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnIndexLoad()
 {
     updateClock();
+    GetMeasurements();
     IndTID = setInterval('updateClock()', 1000 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
