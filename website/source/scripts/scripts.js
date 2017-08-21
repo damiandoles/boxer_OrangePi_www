@@ -5,6 +5,7 @@
  */
 
 var IndTID;
+var xhr = null;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
 {
@@ -309,14 +310,62 @@ function SetIndexTimers()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function GetMeasurements()
 {
-    var reader = new FileReader();
-    reader.readAsArrayBuffer('/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db');
-    
-    var sql = require('scripts/sql.js');
-    var db = new sql.Database(reader);
-    var res = db.exec("SELECT * FROM BASIC");  
+    try
+    {
+        if (window.XMLHttpRequest) 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        
+        xhr.onload = XHR_onload;
+        xhr.onreadystatechange = XHR_onreadystatechange;
+        xhr.onloadend = XHR_onloadend;
+//        xhr.open("GET", '/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db', true);
+        xhr.open('GET', 'boxer.db', true);
+        xhr.responseType = 'arraybuffer';
+//        xhr.open('GET', 'dupa.txt', true);
+//        xhr.responseType = 'text';
+
+        xhr.send(null); 
+    }
+    catch (err)
+    {
+        alert(err);
+    }
 }
 
+function XHR_onloadend()
+{
+    alert('wczytane');
+}
+
+function XHR_onload()
+{
+    try
+    {
+        var SQL = window.SQL;
+        var uInt8Array = new Uint8Array(xhr.response);
+        var db = new SQL.Databse(uInt8Array);
+        var contents = db.exec("SELECT * FROM BASIC_MEAS");
+        // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+    }
+    catch (err)
+    {
+        alert(err);
+    }
+}
+        
+function XHR_onreadystatechange() 
+{
+    if (xhr.readyState == 4 && xhr.status == 200) 
+    {
+        alert('xhr.responseText=' + xhr.responseText);
+    }
+} 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnIndexLoad()
 {
