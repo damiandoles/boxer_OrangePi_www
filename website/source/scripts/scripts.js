@@ -5,6 +5,7 @@
  */
 
 var IndTID;
+var sql = window.SQL;
 var xhr = null;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
@@ -308,10 +309,38 @@ function SetIndexTimers()
     IndTID = setInterval('updateClock()', 1000 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-function GetMeasurements()
+//function GetMeasurements()
+//{
+//    try
+//    {
+//        if (window.XMLHttpRequest) 
+//        {
+//            xhr = new XMLHttpRequest();
+//        }
+//        else 
+//        {
+//            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+//        }
+//        
+//        xhr.onload = XHR_onload;
+//        xhr.onreadystatechange = XHR_onreadystatechange;
+////        xhr.open("GET", '/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db', true);
+//        xhr.open('GET', 'boxer.db', true);
+//        xhr.responseType = 'arraybuffer';
+//        xhr.send(null); 
+//    }
+//    catch (err)
+//    {
+//        alert(err);
+//    }
+//}
+
+    function GetMeasurements()
 {
     try
     {
+//        var sql = window.SQL;
+//        var xhr = null;
         if (window.XMLHttpRequest) 
         {
             xhr = new XMLHttpRequest();
@@ -320,15 +349,18 @@ function GetMeasurements()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        
-        xhr.onload = XHR_onload;
-        xhr.onreadystatechange = XHR_onreadystatechange;
-        xhr.onloadend = XHR_onloadend;
+                //xhr.onreadystatechange = XHR_onreadystatechange;
 //        xhr.open("GET", '/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db', true);
         xhr.open('GET', 'boxer.db', true);
         xhr.responseType = 'arraybuffer';
-//        xhr.open('GET', 'dupa.txt', true);
-//        xhr.responseType = 'text';
+//        xhr.onload = XHR_onload;
+        xhr.onload = function(e) {
+            var uInt8Array = new Uint8Array(xhr.response);
+            var db = new sql.Database(uInt8Array);
+            var basic_meas = db.exec("SELECT * FROM BASIC_MEAS");
+            var ph_meas = db.exec("SELECT * FROM PH_MEAS");
+            // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+        };
 
         xhr.send(null); 
     }
@@ -337,35 +369,30 @@ function GetMeasurements()
         alert(err);
     }
 }
-
-function XHR_onloadend()
-{
-    alert('wczytane');
-}
-
-function XHR_onload()
-{
-    try
-    {
-        var SQL = window.SQL;
-        var uInt8Array = new Uint8Array(xhr.response);
-        var db = new SQL.Databse(uInt8Array);
-        var contents = db.exec("SELECT * FROM BASIC_MEAS");
-        // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-    }
-    catch (err)
-    {
-        alert(err);
-    }
-}
-        
-function XHR_onreadystatechange() 
-{
-    if (xhr.readyState == 4 && xhr.status == 200) 
-    {
-        alert('xhr.responseText=' + xhr.responseText);
-    }
-} 
+//function XHR_onload()
+//{
+//    try
+//    {
+//        var SQL = window.SQL;
+//        var uInt8Array = new Uint8Array(xhr.response);
+//        var db = new SQL.Databse(uInt8Array);
+//        var contents = db.exec("SELECT * FROM BASIC_MEAS");
+//        // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+//    }
+//    catch (err)
+//    {
+//        alert(err);
+//    }
+//}
+//        
+//function XHR_onreadystatechange() 
+//{
+//    if (xhr.readyState == 4 && xhr.status == 200) 
+//    {
+////        alert('xhr.responseText=' + xhr.responseText);
+//        console.log("readyState=4 & status=200\r\n");
+//    }
+//} 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnIndexLoad()
 {
