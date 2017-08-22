@@ -1,9 +1,4 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 var IndTID;
 var sql = window.SQL;
 var xhr = null;
@@ -64,12 +59,12 @@ function IrrigationMode()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function ResetFactorySettings()
 {
-    alert("Settings has been reset to the default!");
+    console.log("Settings has been reset to the default!");
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function ResetDevice()
 {
-    alert("Device has been reset!");
+    console.log("Device has been reset!");
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveNetworkSettings()
@@ -129,7 +124,7 @@ function SaveNetworkSettings()
     
     if (!dataError)
     {
-        alert("Network settings saved!");
+        console.log("Network settings saved!");
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,11 +182,11 @@ function SaveLightSettings()
         if (timeOn + timeOff === 24)
         {
             // zapis do urzadzenia
-            alert("Light settings saved!");
+            console.log("Light settings saved!");
         }
         else
         {
-            alert("Sum of times (on+off) must equal 24 hours!");
+            console.log("Sum of times (on+off) must equal 24 hours!");
         }
     }
 }
@@ -245,13 +240,13 @@ function SaveTempFanSettings()
     if (!dataError)
     {
         // zapis do urzadzenia
-        alert("Temp/Fan settings saved!");
+        console.log("Temp/Fan settings saved!");
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveIrrigationSettings()
 {
-    alert("Irrigation settings saved!");
+    console.log("Irrigation settings saved!");
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function CalibrateProbe()
@@ -274,11 +269,11 @@ function CalibrateProbe()
     {
         if (waterProbe)
         {
-            alert("Calibration of water probe started!"); 
+            console.log("Calibration of water probe started!"); 
         }
         else
         {
-            alert("Calibration of soil probe started!"); 
+            console.log("Calibration of soil probe started!"); 
         }
     }
 }
@@ -309,39 +304,11 @@ function SetIndexTimers()
     IndTID = setInterval('updateClock()', 1000 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-//function GetMeasurements()
-//{
-//    try
-//    {
-//        if (window.XMLHttpRequest) 
-//        {
-//            xhr = new XMLHttpRequest();
-//        }
-//        else 
-//        {
-//            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-//        }
-//        
-//        xhr.onload = XHR_onload;
-//        xhr.onreadystatechange = XHR_onreadystatechange;
-////        xhr.open("GET", '/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db', true);
-//        xhr.open('GET', 'boxer.db', true);
-//        xhr.responseType = 'arraybuffer';
-//        xhr.send(null); 
-//    }
-//    catch (err)
-//    {
-//        alert(err);
-//    }
-//}
-
-    function GetMeasurements()
+function GetMeasurements()
 {
     try
     {
-//        var sql = window.SQL;
-//        var xhr = null;
-        if (window.XMLHttpRequest) 
+        if (window.XMLHttpRequest) //every browsers without IE 
         {
             xhr = new XMLHttpRequest();
         }
@@ -349,50 +316,45 @@ function SetIndexTimers()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-                //xhr.onreadystatechange = XHR_onreadystatechange;
+        
 //        xhr.open("GET", '/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db', true);
         xhr.open('GET', 'boxer.db', true);
         xhr.responseType = 'arraybuffer';
-//        xhr.onload = XHR_onload;
-        xhr.onload = function(e) {
-            var uInt8Array = new Uint8Array(xhr.response);
-            var db = new sql.Database(uInt8Array);
-            var basic_meas = db.exec("SELECT * FROM BASIC_MEAS");
-            var ph_meas = db.exec("SELECT * FROM PH_MEAS");
-            // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-        };
-
+        xhr.onload = XHR_onload;
         xhr.send(null); 
     }
     catch (err)
     {
-        alert(err);
+        console.log(err);
     }
 }
-//function XHR_onload()
-//{
-//    try
-//    {
-//        var SQL = window.SQL;
-//        var uInt8Array = new Uint8Array(xhr.response);
-//        var db = new SQL.Databse(uInt8Array);
-//        var contents = db.exec("SELECT * FROM BASIC_MEAS");
-//        // contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-//    }
-//    catch (err)
-//    {
-//        alert(err);
-//    }
-//}
-//        
-//function XHR_onreadystatechange() 
-//{
-//    if (xhr.readyState == 4 && xhr.status == 200) 
-//    {
-////        alert('xhr.responseText=' + xhr.responseText);
-//        console.log("readyState=4 & status=200\r\n");
-//    }
-//} 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function XHR_onload()
+{
+    try
+    {
+        var uInt8Array = new Uint8Array(xhr.response);
+        var db = new sql.Database(uInt8Array);
+        
+        var basic_meas  = db.exec("SELECT * FROM BASIC_MEAS ORDER BY TIMELOCAL DESC Limit 1");
+        var ph_meas     = db.exec("SELECT * FROM PH_MEAS ORDER BY TIMELOCAL DESC Limit 1");
+
+//        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+        document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
+        document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
+        document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
+        document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
+        document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
+        document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
+        document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
+        document.getElementById("M_08").value = basic_meas[0]['values'][0][5];
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnIndexLoad()
 {
