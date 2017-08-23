@@ -383,7 +383,9 @@ function GetLampConfig()
                 break;
             }
             
-            document.getElementById("L_05").value = lamp_config[0]['values'][0][3];          
+            document.getElementById("L_05").value = lamp_config[0]['values'][0][3]; 
+            document.getElementById("L_06").value = parseInt(lamp_config[0]['values'][0][4]);
+            document.getElementById("L_07").value = parseInt(lamp_config[0]['values'][0][5]);
         }
         
         xhr.send(null); 
@@ -417,14 +419,11 @@ function GetTempFanConfig()
 
     //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
 
-            document.getElementById("M_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
-            document.getElementById("M_02").value = parseInt(temp_fan_config[0]['values'][0][1]);
-            document.getElementById("M_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
-            document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
-            document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
-            document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
-            document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
-            document.getElementById("M_08").value = basic_meas[0]['values'][0][5];            
+            document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
+            document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
+            document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
+            document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
+            TempControlMode();
         }
         
         xhr.send(null); 
