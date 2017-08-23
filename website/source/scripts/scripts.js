@@ -1,7 +1,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-var IndTID;
-var sql = window.SQL;
+var timeDateTimer = null;
+var getMeasurementsTimer = null;
 var xhr = null;
+var sql = window.SQL;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
 {
@@ -182,6 +183,7 @@ function SaveLightSettings()
         if (timeOn + timeOff === 24)
         {
             // zapis do urzadzenia
+            //state: 0 - off, 1 - on
             console.log("Light settings saved!");
         }
         else
@@ -299,9 +301,179 @@ function CheckShortTime(ATime)
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-function SetIndexTimers()
+function GetIrrigationConfig()
 {
-    IndTID = setInterval('updateClock()', 1000 );
+    try
+    {
+        if (window.XMLHttpRequest) //every browsers without IE 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        
+        xhr.open('GET', 'boxer.db', true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function(){
+            var uInt8Array = new Uint8Array(xhr.response);
+            var db = new sql.Database(uInt8Array);
+
+            var irr_config  = db.exec("SELECT * FROM IRRIGATION_CONFIG");
+
+    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+            document.getElementById("M_01").value = parseInt(irr_config[0]['values'][0][0]);
+            document.getElementById("M_02").value = parseInt(irr_config[0]['values'][0][1]);
+            document.getElementById("M_03").value = parseInt(irr_config[0]['values'][0][2]);
+            document.getElementById("M_04").value = parseInt(irr_config[0]['values'][0][3]);
+            document.getElementById("M_05").value = parseInt(irr_config[0]['values'][0][4]);           
+        }
+        
+        xhr.send(null); 
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function GetLampConfig()
+{
+    try
+    {
+        if (window.XMLHttpRequest) //every browsers without IE 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        
+        xhr.open('GET', 'boxer.db', true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function(){
+            var uInt8Array = new Uint8Array(xhr.response);
+            var db = new sql.Database(uInt8Array);
+
+            var lamp_config  = db.exec("SELECT * FROM LAMP_CONFIG");
+
+    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+            document.getElementById("L_01").value = parseInt(lamp_config[0]['values'][0][0]);
+            document.getElementById("L_02").value = parseInt(lamp_config[0]['values'][0][1]);
+            
+            var state = parseInt(lamp_config[0]['values'][0][2]);
+            
+            switch (state)
+            {
+            case 0:
+                document.getElementById("L_03").disabled = true;
+                document.getElementById("L_04").checked = true;
+                break;
+                
+            case 1:
+                document.getElementById("L_03").checked = true;
+                document.getElementById("L_04").disabled = true;                
+                break;
+                
+            default:
+                break;
+            }
+            
+            document.getElementById("L_05").value = lamp_config[0]['values'][0][3];          
+        }
+        
+        xhr.send(null); 
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function GetTempFanConfig()
+{
+    try
+    {
+        if (window.XMLHttpRequest) //every browsers without IE 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        
+        xhr.open('GET', 'boxer.db', true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function(){
+            var uInt8Array = new Uint8Array(xhr.response);
+            var db = new sql.Database(uInt8Array);
+
+            var temp_fan_config  = db.exec("SELECT * FROM TEMP_FAN_CONFIG");
+
+    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+            document.getElementById("M_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
+            document.getElementById("M_02").value = parseInt(temp_fan_config[0]['values'][0][1]);
+            document.getElementById("M_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
+            document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
+            document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
+            document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
+            document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
+            document.getElementById("M_08").value = basic_meas[0]['values'][0][5];            
+        }
+        
+        xhr.send(null); 
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function GetAdvancedConfig()
+{
+    try
+    {
+        if (window.XMLHttpRequest) //every browsers without IE 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        
+        xhr.open('GET', 'boxer.db', true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function(){
+            var uInt8Array = new Uint8Array(xhr.response);
+            var db = new sql.Database(uInt8Array);
+
+            var advanced_config  = db.exec("SELECT * FROM ADVANCED_CONFIG");
+
+    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+            document.getElementById("M_01").value = parseInt(advanced_config[0]['values'][0][0]);
+            document.getElementById("M_02").value = parseInt(advanced_config[0]['values'][0][1]);
+            document.getElementById("M_03").value = parseInt(advanced_config[0]['values'][0][2]);
+            document.getElementById("M_04").value = parseInt(advanced_config[0]['values'][0][3]);
+            document.getElementById("M_05").value = parseInt(advanced_config[0]['values'][0][4]);
+            document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
+            document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
+            document.getElementById("M_08").value = basic_meas[0]['values'][0][5];            
+        }
+        
+        xhr.send(null); 
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function GetMeasurements()
@@ -317,10 +489,27 @@ function GetMeasurements()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
-//        xhr.open("GET", '/home/dolewdam/Git_Repos/Prywatne/boxer_orangepi_motherboard/ster_linux/sqldb/boxer.db', true);
         xhr.open('GET', 'boxer.db', true);
         xhr.responseType = 'arraybuffer';
-        xhr.onload = XHR_onload;
+        xhr.onload = function(){
+            var uInt8Array = new Uint8Array(xhr.response);
+            var db = new sql.Database(uInt8Array);
+
+            var basic_meas  = db.exec("SELECT * FROM BASIC_MEAS ORDER BY TIMELOCAL DESC Limit 1");
+            var ph_meas     = db.exec("SELECT * FROM PH_MEAS ORDER BY TIMELOCAL DESC Limit 1");
+
+    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+            document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
+            document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
+            document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
+            document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
+            document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
+            document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
+            document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
+            document.getElementById("M_08").value = basic_meas[0]['values'][0][5];            
+        }
+        
         xhr.send(null); 
     }
     catch (err)
@@ -329,38 +518,32 @@ function GetMeasurements()
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-function XHR_onload()
+function OnAdvancedLoad()
 {
-    try
-    {
-        var uInt8Array = new Uint8Array(xhr.response);
-        var db = new sql.Database(uInt8Array);
-        
-        var basic_meas  = db.exec("SELECT * FROM BASIC_MEAS ORDER BY TIMELOCAL DESC Limit 1");
-        var ph_meas     = db.exec("SELECT * FROM PH_MEAS ORDER BY TIMELOCAL DESC Limit 1");
-
-//        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-        document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
-        document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
-        document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
-        document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
-        document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
-        document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
-        document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
-        document.getElementById("M_08").value = basic_meas[0]['values'][0][5];
-    }
-    catch (err)
-    {
-        console.log(err);
-    }
+    GetAdvancedConfig();
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function OnIrrigationLoad()
+{
+    GetIrrigationConfig();
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function OnTempFanLoad()
+{
+    GetTempFanConfig();
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnIndexLoad()
 {
-    updateClock();
+    TimeDateUpdate();
     GetMeasurements();
-    IndTID = setInterval('updateClock()', 1000 );
+    timeDateTimer = setInterval('TimeDateUpdate()', 1000 );
+    getMeasurementsTimer = setInterval('GetMeasurements()', 3000 );
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function OnLampLoad()
+{
+    GetLampConfig();
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function LightStateCheckBox()
@@ -411,7 +594,7 @@ function PhCalibCheckBox()
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-function updateClock()
+function TimeDateUpdate()
 {
     var dateTimeObj = new Date();
     
