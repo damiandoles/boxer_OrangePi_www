@@ -458,14 +458,17 @@ function GetAdvancedConfig()
 
     //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
 
-            document.getElementById("M_01").value = parseInt(advanced_config[0]['values'][0][0]);
-            document.getElementById("M_02").value = parseInt(advanced_config[0]['values'][0][1]);
-            document.getElementById("M_03").value = parseInt(advanced_config[0]['values'][0][2]);
-            document.getElementById("M_04").value = parseInt(advanced_config[0]['values'][0][3]);
-            document.getElementById("M_05").value = parseInt(advanced_config[0]['values'][0][4]);
-            document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
-            document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
-            document.getElementById("M_08").value = basic_meas[0]['values'][0][5];            
+            var dhcpMode = parseInt(advanced_config[0]['values'][0][0]);
+            document.getElementById("N_01").value = dhcpMode;
+            
+            if (dhcpMode == 1)
+            {
+                document.getElementById("N_02").value = advanced_config[0]['values'][0][1];
+                document.getElementById("N_03").value = advanced_config[0]['values'][0][2];
+                document.getElementById("N_04").value = advanced_config[0]['values'][0][3]; 
+            }
+            
+            DhcpMode();
         }
         
         xhr.send(null); 
