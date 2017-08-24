@@ -324,11 +324,12 @@ function GetIrrigationConfig()
 
     //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
 
-            document.getElementById("M_01").value = parseInt(irr_config[0]['values'][0][0]);
-            document.getElementById("M_02").value = parseInt(irr_config[0]['values'][0][1]);
-            document.getElementById("M_03").value = parseInt(irr_config[0]['values'][0][2]);
-            document.getElementById("M_04").value = parseInt(irr_config[0]['values'][0][3]);
-            document.getElementById("M_05").value = parseInt(irr_config[0]['values'][0][4]);           
+            document.getElementById("I_01").value = parseInt(irr_config[0]['values'][0][0]);
+            document.getElementById("I_02").value = parseInt(irr_config[0]['values'][0][1]);
+            document.getElementById("I_03").value = parseInt(irr_config[0]['values'][0][2]);
+            document.getElementById("I_04").value = irr_config[0]['values'][0][3];
+            
+            IrrigationMode();
         }
         
         xhr.send(null); 
