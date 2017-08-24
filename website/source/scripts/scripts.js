@@ -3,6 +3,7 @@ var timeDateTimer = null;
 var getMeasurementsTimer = null;
 var xhr = null;
 var sql = window.SQL;
+var Buffer = window.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
 {
@@ -184,7 +185,42 @@ function SaveLightSettings()
         {
             // zapis do urzadzenia
             //state: 0 - off, 1 - on
-            console.log("Light settings saved!");
+            try
+            {
+                if (window.XMLHttpRequest) //every browsers without IE 
+                {
+                    xhr = new XMLHttpRequest();
+                }
+                else 
+                {
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xhr.open('GET', 'boxer.db', true);
+                xhr.responseType = 'arraybuffer';
+                xhr.onload = function(){
+                    var uInt8Array = new Uint8Array(xhr.response);
+                    var db = new sql.Database(uInt8Array);
+
+                    //var statement = "UPDATE TEMP_FAN_CONFIG SET MODE=" + 
+                    var temp_fan_config  = db.exec("UPDATE TEMP_FAN_CONFIG SET MODE");
+
+            //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+
+                    document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
+                    document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
+                    document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
+                    document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
+                    TempControlMode();
+                }
+
+                xhr.send(null); 
+                console.log("Light settings saved!");
+            }
+            catch (err)
+            {
+                console.log(err);
+            }
         }
         else
         {
@@ -242,7 +278,51 @@ function SaveTempFanSettings()
     if (!dataError)
     {
         // zapis do urzadzenia
-        console.log("Temp/Fan settings saved!");
+        var binArray;
+        try
+        {
+            if (window.XMLHttpRequest) //every browsers without IE 
+            {
+                xhr = new XMLHttpRequest();
+            }
+            else 
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xhr.open('GET', 'boxer.db', true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function(){
+                var uInt8Array = new Uint8Array(xhr.response);
+                var db = new sql.Database(uInt8Array);
+
+                var statement = "UPDATE TEMP_FAN_CONFIG SET MODE=" + tempCtrlMode + ","
+                        + "FANPULL="  + pullFanPower + ","
+                        + "FANPUSH="  + pushFanPower + ","
+                        + "TEMP_MAX=" + tempMax + ";";
+                db.run(statement);
+                binArray = db.export();
+                db.close();
+                //TempControlMode();
+                require(['scripts/buffer'], function (Buffer) {
+                    require(['scripts/fs'], function () {
+                    //foo is now loaded.
+                    var buffer = new Buffer.from(binArray);
+                    fs.writeFile("boxer.db", buffer);
+                    });
+                });
+
+//                var data = db.export();
+
+            }
+
+            xhr.send(null); 
+            //console.log("Temp/Fan settings saved!");
+        }
+        catch (err)
+        {
+            console.log(err);
+        }  
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -330,6 +410,7 @@ function GetIrrigationConfig()
             document.getElementById("I_04").value = irr_config[0]['values'][0][3];
             
             IrrigationMode();
+            db.close();
         }
         
         xhr.send(null); 
@@ -387,6 +468,8 @@ function GetLampConfig()
             document.getElementById("L_05").value = lamp_config[0]['values'][0][3]; 
             document.getElementById("L_06").value = parseInt(lamp_config[0]['values'][0][4]);
             document.getElementById("L_07").value = parseInt(lamp_config[0]['values'][0][5]);
+            
+            db.close();
         }
         
         xhr.send(null); 
@@ -425,6 +508,7 @@ function GetTempFanConfig()
             document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
             document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
             TempControlMode();
+            db.close();
         }
         
         xhr.send(null); 
@@ -469,6 +553,7 @@ function GetAdvancedConfig()
             }
             
             DhcpMode();
+            db.close();
         }
         
         xhr.send(null); 
@@ -510,7 +595,8 @@ function GetMeasurements()
             document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
             document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
             document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
-            document.getElementById("M_08").value = basic_meas[0]['values'][0][5];            
+            document.getElementById("M_08").value = basic_meas[0]['values'][0][5]; 
+            db.close();
         }
         
         xhr.send(null); 
