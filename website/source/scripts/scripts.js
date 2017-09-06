@@ -2,8 +2,7 @@
 var timeDateTimer = null;
 var getMeasurementsTimer = null;
 var xhr = null;
-var sql = window.SQL;
-var Buffer = window.
+//var sql = window.SQL;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
 {
@@ -195,27 +194,40 @@ function SaveLightSettings()
                 {
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
+                    var url = "SaveData";
+                    var params = "var1=1&var2=2";
+                    xhr.open("POST", url, true);
 
-                xhr.open('GET', 'boxer.db', true);
-                xhr.responseType = 'arraybuffer';
-                xhr.onload = function(){
-                    var uInt8Array = new Uint8Array(xhr.response);
-                    var db = new sql.Database(uInt8Array);
-
-                    //var statement = "UPDATE TEMP_FAN_CONFIG SET MODE=" + 
-                    var temp_fan_config  = db.exec("UPDATE TEMP_FAN_CONFIG SET MODE");
-
-            //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-                    document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
-                    document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
-                    document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
-                    document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
-                    TempControlMode();
-                }
-
-                xhr.send(null); 
-                console.log("Light settings saved!");
+                    //Send the proper header information along with the request
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    //xhr.setRequestHeader("Content-length", params.length);
+                    
+                    xhr.onreadystatechange = function() {//Call a function when the state changes.
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            alert(xhr.responseText);
+                        }
+                    }
+                    xhr.send(params);
+//                xhr.open('GET', 'boxer.db', true);
+//                xhr.responseType = 'arraybuffer';
+//                xhr.onload = function(){
+//                    var uInt8Array = new Uint8Array(xhr.response);
+//                    var db = new sql.Database(uInt8Array);
+//
+//                    //var statement = "UPDATE TEMP_FAN_CONFIG SET MODE=" + 
+//                    var temp_fan_config  = db.exec("UPDATE TEMP_FAN_CONFIG SET MODE");
+//
+//            //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
+//
+//                    document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
+//                    document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
+//                    document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
+//                    document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
+//                    TempControlMode();
+//                }
+//
+//                xhr.send(null); 
+//                console.log("Light settings saved!");
             }
             catch (err)
             {
@@ -625,14 +637,14 @@ function OnTempFanLoad()
 function OnIndexLoad()
 {
     TimeDateUpdate();
-    GetMeasurements();
+    //GetMeasurements();
     timeDateTimer = setInterval('TimeDateUpdate()', 1000 );
-    getMeasurementsTimer = setInterval('GetMeasurements()', 3000 );
+    //getMeasurementsTimer = setInterval('GetMeasurements()', 3000 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnLampLoad()
 {
-    GetLampConfig();
+    //GetLampConfig();
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function LightStateCheckBox()
