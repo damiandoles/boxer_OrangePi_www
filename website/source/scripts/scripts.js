@@ -641,7 +641,22 @@ function GetIrrigationConfig()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
+               
+        var url = "GetIrr";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                console.log("GetIrr respose OK\r\n");
+                console.log(xhr.responseText+"\r\n");
+                xhr = null;
+            }
+        };
+        xhr.send(null);
     }
     catch (err)
     {
@@ -662,7 +677,21 @@ function GetLampConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
+        var url = "GetLamp";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                console.log("GetLamp respose OK\r\n");
+                console.log(xhr.responseText+"\r\n");
+                xhr = null;
+            }
+        };
+        xhr.send(null);
 //        document.getElementById("L_01").value = parseInt(lamp_config[0]['values'][0][0]);
 //        document.getElementById("L_02").value = parseInt(lamp_config[0]['values'][0][1]);
 //
@@ -706,6 +735,22 @@ function GetTempFanConfig()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
+         
+        var url = "GetTempFan";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                console.log("GetTempFan respose OK\r\n");
+                console.log(xhr.responseText+"\r\n");
+                xhr = null;
+            }
+        };
+        xhr.send(null);  
         
 //        document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
 //        document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
@@ -731,7 +776,21 @@ function GetAdvancedConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
- 
+        var url = "GetAdvanced";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                console.log("GetAdvanced respose OK\r\n");
+                console.log(xhr.responseText+"\r\n");
+                xhr = null;
+            }
+        };
+        xhr.send(null); 
 //            var dhcpMode = parseInt(advanced_config[0]['values'][0][0]);
 //            document.getElementById("N_01").value = dhcpMode;
 //            
@@ -762,6 +821,21 @@ function GetMeasurements()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
 
+        var url = "GetMeas";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                console.log("GetMeas respose OK\r\n");
+                console.log(xhr.responseText+"\r\n");
+                xhr = null;
+            }
+        };
+        xhr.send(null); 
 //        document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
 //        document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
 //        document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
