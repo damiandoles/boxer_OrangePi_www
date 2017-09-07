@@ -2,7 +2,6 @@
 var timeDateTimer = null;
 var getMeasurementsTimer = null;
 var xhr = null;
-//var sql = window.SQL;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function TempControlMode()
 {
@@ -60,12 +59,72 @@ function IrrigationMode()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function ResetFactorySettings()
 {
-    console.log("Settings has been reset to the default!");
+    try
+    {
+        if (window.XMLHttpRequest) //every browsers without IE 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xhr.open("HEAD", "FactoryDef", true);
+        xhr.setRequestHeader("Content-type", "text/plain");
+
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                xhr = null;
+                console.log("FactoryDef respose OK\r\n");
+            }
+        };
+        xhr.send(null);
+
+        console.log("Settings has been reset to the default!");
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function ResetDevice()
 {
-    console.log("Device has been reset!");
+    try
+    {
+        if (window.XMLHttpRequest) //every browsers without IE 
+        {
+            xhr = new XMLHttpRequest();
+        }
+        else 
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xhr.open("HEAD", "Reset", true);
+        xhr.setRequestHeader("Content-type", "text/plain");
+
+        xhr.onreadystatechange = function() 
+        {
+            //Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) 
+            {
+                xhr = null;
+                console.log("Reset respose OK\r\n");
+            }
+        };
+        xhr.send(null);
+
+        console.log("Device has been reset!");
+    }
+    catch (err)
+    {
+        console.log(err);
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveNetworkSettings()
@@ -80,6 +139,9 @@ function SaveNetworkSettings()
     {
         case 0:
             //wlacz dhcp
+            ipAddr = "--";
+            mask = "--";
+            gateway = "--";
             break;
             
         case 1:
@@ -125,7 +187,44 @@ function SaveNetworkSettings()
     
     if (!dataError)
     {
-        console.log("Network settings saved!");
+        try
+        {
+            if (window.XMLHttpRequest) //every browsers without IE 
+            {
+                xhr = new XMLHttpRequest();
+            }
+            else 
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            var url = "SaveNetwork";
+            var params = 
+                "dhcpMode="   + dhcpMode +
+                "&ipAddr="    + ipAddr +
+                "&mask="      + mask +
+                "&gateway="   + gateway;
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() 
+            {
+                //Call a function when the state changes.
+                if (xhr.readyState == 4 && xhr.status == 200) 
+                {
+                    xhr = null;
+                    console.log("SaveNetwork respose OK\r\n");
+                }
+            };
+            xhr.send(params);
+
+            console.log("Network settings saved!");
+        }
+        catch (err)
+        {
+            console.log(err);
+        }
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +283,16 @@ function SaveLightSettings()
         {
             // zapis do urzadzenia
             //state: 0 - off, 1 - on
+            var initState;
+            if (stateOn == true & stateOff == false)
+            {
+                initState = 1;
+            }
+            else
+            {
+                initState = 0;
+            }
+
             try
             {
                 if (window.XMLHttpRequest) //every browsers without IE 
@@ -194,40 +303,29 @@ function SaveLightSettings()
                 {
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
-                    var url = "SaveData";
-                    var params = "var1=1&var2=2";
-                    xhr.open("POST", url, true);
+                
+                var url = "SaveLamp";
+                var params = 
+                    "timeOn="           + timeOn +
+                    "&timeOff="         + timeOff +
+                    "&initState="       + initState +
+                    "&turnOnOffTime="   + turnOnOffTime;
+                
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-                    //Send the proper header information along with the request
-                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    //xhr.setRequestHeader("Content-length", params.length);
-                    
-                    xhr.onreadystatechange = function() {//Call a function when the state changes.
-                        if (xhr.readyState == 4 && xhr.status == 200) {
-                            alert(xhr.responseText);
-                        }
+                xhr.onreadystatechange = function() 
+                {
+                    //Call a function when the state changes.
+                    if (xhr.readyState == 4 && xhr.status == 200) 
+                    {
+                        xhr = null;
+                        console.log("SaveLamp respose OK\r\n");
                     }
-                    xhr.send(params);
-//                xhr.open('GET', 'boxer.db', true);
-//                xhr.responseType = 'arraybuffer';
-//                xhr.onload = function(){
-//                    var uInt8Array = new Uint8Array(xhr.response);
-//                    var db = new sql.Database(uInt8Array);
-//
-//                    //var statement = "UPDATE TEMP_FAN_CONFIG SET MODE=" + 
-//                    var temp_fan_config  = db.exec("UPDATE TEMP_FAN_CONFIG SET MODE");
-//
-//            //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-//
-//                    document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
-//                    document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
-//                    document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
-//                    document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
-//                    TempControlMode();
-//                }
-//
-//                xhr.send(null); 
-//                console.log("Light settings saved!");
+                };
+                xhr.send(params);
+
+                console.log("Light settings saved!");
             }
             catch (err)
             {
@@ -272,6 +370,7 @@ function SaveTempFanSettings()
                 document.getElementById("T_04Error").innerHTML = "";
             } 
             break;
+            
         case "1":
             if (isNaN(tempMax) || tempMax < 20 || tempMax > 32)
             {
@@ -282,15 +381,17 @@ function SaveTempFanSettings()
             {
                 document.getElementById("T_02Error").innerHTML = "";
             }
+            pushFanPower = "--";
+            pullFanPower = "--";
             break;
+            
         default:
+            dataError = true;
             break;
     }
     
     if (!dataError)
     {
-        // zapis do urzadzenia
-        var binArray;
         try
         {
             if (window.XMLHttpRequest) //every browsers without IE 
@@ -301,35 +402,28 @@ function SaveTempFanSettings()
             {
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
+            
+            var url = "SaveTempFan";
+            var params = 
+                "tempCtrlMode="   + tempCtrlMode +
+                "&tempMax="       + tempMax +
+                "&pushFanPower="  + pushFanPower +
+                "&pullFanPower="  + pullFanPower;
 
-            xhr.open('GET', 'boxer.db', true);
-            xhr.responseType = 'arraybuffer';
-            xhr.onload = function(){
-                var uInt8Array = new Uint8Array(xhr.response);
-                var db = new sql.Database(uInt8Array);
-
-                var statement = "UPDATE TEMP_FAN_CONFIG SET MODE=" + tempCtrlMode + ","
-                        + "FANPULL="  + pullFanPower + ","
-                        + "FANPUSH="  + pushFanPower + ","
-                        + "TEMP_MAX=" + tempMax + ";";
-                db.run(statement);
-                binArray = db.export();
-                db.close();
-                //TempControlMode();
-                require(['scripts/buffer'], function (Buffer) {
-                    require(['scripts/fs'], function () {
-                    //foo is now loaded.
-                    var buffer = new Buffer.from(binArray);
-                    fs.writeFile("boxer.db", buffer);
-                    });
-                });
-
-//                var data = db.export();
-
-            }
-
-            xhr.send(null); 
-            //console.log("Temp/Fan settings saved!");
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() 
+            {
+                //Call a function when the state changes.
+                if (xhr.readyState == 4 && xhr.status == 200) 
+                {
+                    xhr = null;
+                    console.log("SaveTempFan respose OK\r\n");
+                }
+            };
+            
+            xhr.send(params);
+            console.log("Temp/Fan settings saved!");
         }
         catch (err)
         {
@@ -340,7 +434,111 @@ function SaveTempFanSettings()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function SaveIrrigationSettings()
 {
-    console.log("Irrigation settings saved!");
+    var dataError = false;
+    var irrMode  = document.getElementById("I_01").value;
+    var waterAmount = parseInt(document.getElementById("I_02").value, 10);
+    var irrFreq = parseInt(document.getElementById("I_03").value, 10);
+    var startTime = document.getElementById("I_04").value;
+    
+    switch (irrMode)
+    {
+    case "0":
+        dataError = CheckIrrWaterAmount(waterAmount);
+        irrFreq = "--";
+        startTime = "--";
+        break;
+
+    case "1":
+        dataError = CheckIrrWaterAmount(waterAmount);
+        irrFreq = "--";
+        startTime = "--";
+        break;
+
+    case "2":
+        dataError = CheckIrrWaterAmount(waterAmount);
+        if (isNaN(irrFreq) || irrFreq < 0 || irrFreq > 7) //days
+        {
+            dataError = true;
+            document.getElementById("I_03Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong frequency! Please select value from 1 to 7 days";
+        }
+        else
+        {
+            document.getElementById("I_03Error").innerHTML = "";
+        }
+        
+        if (!CheckShortTime(startTime))
+        {
+            dataError = true;
+            document.getElementById("I_04Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong turn on time!";
+        }
+        else
+        {
+            document.getElementById("I_04Error").innerHTML = "";
+        }
+        break;
+
+    default:
+        dataError = true;
+        break;
+    }
+    
+    if (!dataError)
+    {
+        try
+        {
+            if (window.XMLHttpRequest) //every browsers without IE 
+            {
+                xhr = new XMLHttpRequest();
+            }
+            else 
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            var url = "SaveIrr";
+            var params = 
+                "irrMode="      + irrMode +
+                "&waterAmount=" + waterAmount +
+                "&irrFreq="     + irrFreq +
+                "&startTime="   + startTime;
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() 
+            {
+                //Call a function when the state changes.
+                if (xhr.readyState == 4 && xhr.status == 200) 
+                {
+                    xhr = null;
+                    console.log("SaveIrr respose OK\r\n");
+                }
+            };
+            
+            xhr.send(params);
+            console.log("Irrigation settings saved!\r\n");
+        }
+        catch (err)
+        {
+            console.log(err);
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function CheckIrrWaterAmount(waterAmount)
+{
+    var dataError = false;
+    if (isNaN(waterAmount) || waterAmount < 100 || waterAmount > 3000) //ml
+    {
+        dataError = true;
+        document.getElementById("I_02Error").innerHTML = "&nbsp;&nbsp;&nbsp;Wrong amount of water! Please select value from 100 to 3000ml";
+    }
+    else
+    {
+        document.getElementById("I_02Error").innerHTML = "";
+    } 
+    
+    return dataError;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function CalibrateProbe()
@@ -361,23 +559,61 @@ function CalibrateProbe()
     
     if (!dataError)
     {
+        var probeType;
         if (waterProbe)
         {
+            probeType = 1;
             console.log("Calibration of water probe started!"); 
         }
         else
         {
+            probeType = 2;
             console.log("Calibration of soil probe started!"); 
+        }
+        
+        try
+        {
+            if (window.XMLHttpRequest) //every browsers without IE 
+            {
+                xhr = new XMLHttpRequest();
+            }
+            else 
+            {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            var url = "SaveCalibPh";
+            var params = "probeType=" + probeType;
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() 
+            {
+                //Call a function when the state changes.
+                if (xhr.readyState == 4 && xhr.status == 200) 
+                {
+                    xhr = null;
+                    console.log("SaveCalibPh respose OK\r\n");
+                }
+            };
+            xhr.send(params);
+        }
+        catch (err)
+        {
+            console.log(err);
         }
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-function ValidateIPaddress(ipaddress) {  
-    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
+function ValidateIPaddress(ipaddress) 
+{  
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) 
+    {  
         return (true);  
     }  
     else
-        return (false)  
+        return (false);
 }  
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function CheckShortTime(ATime)
@@ -405,27 +641,7 @@ function GetIrrigationConfig()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        
-        xhr.open('GET', 'boxer.db', true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function(){
-            var uInt8Array = new Uint8Array(xhr.response);
-            var db = new sql.Database(uInt8Array);
 
-            var irr_config  = db.exec("SELECT * FROM IRRIGATION_CONFIG");
-
-    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-            document.getElementById("I_01").value = parseInt(irr_config[0]['values'][0][0]);
-            document.getElementById("I_02").value = parseInt(irr_config[0]['values'][0][1]);
-            document.getElementById("I_03").value = parseInt(irr_config[0]['values'][0][2]);
-            document.getElementById("I_04").value = irr_config[0]['values'][0][3];
-            
-            IrrigationMode();
-            db.close();
-        }
-        
-        xhr.send(null); 
     }
     catch (err)
     {
@@ -446,45 +662,31 @@ function GetLampConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
-        xhr.open('GET', 'boxer.db', true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function(){
-            var uInt8Array = new Uint8Array(xhr.response);
-            var db = new sql.Database(uInt8Array);
 
-            var lamp_config  = db.exec("SELECT * FROM LAMP_CONFIG");
-
-    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-            document.getElementById("L_01").value = parseInt(lamp_config[0]['values'][0][0]);
-            document.getElementById("L_02").value = parseInt(lamp_config[0]['values'][0][1]);
-            
-            var state = parseInt(lamp_config[0]['values'][0][2]);
-            
-            switch (state)
-            {
-            case 0:
-                document.getElementById("L_03").disabled = true;
-                document.getElementById("L_04").checked = true;
-                break;
-                
-            case 1:
-                document.getElementById("L_03").checked = true;
-                document.getElementById("L_04").disabled = true;                
-                break;
-                
-            default:
-                break;
-            }
-            
-            document.getElementById("L_05").value = lamp_config[0]['values'][0][3]; 
-            document.getElementById("L_06").value = parseInt(lamp_config[0]['values'][0][4]);
-            document.getElementById("L_07").value = parseInt(lamp_config[0]['values'][0][5]);
-            
-            db.close();
-        }
-        
-        xhr.send(null); 
+//        document.getElementById("L_01").value = parseInt(lamp_config[0]['values'][0][0]);
+//        document.getElementById("L_02").value = parseInt(lamp_config[0]['values'][0][1]);
+//
+//        var state = parseInt(lamp_config[0]['values'][0][2]);
+//
+//        switch (state)
+//        {
+//        case 0:
+//            document.getElementById("L_03").disabled = true;
+//            document.getElementById("L_04").checked = true;
+//            break;
+//
+//        case 1:
+//            document.getElementById("L_03").checked = true;
+//            document.getElementById("L_04").disabled = true;                
+//            break;
+//
+//        default:
+//            break;
+//        }
+//
+//        document.getElementById("L_05").value = lamp_config[0]['values'][0][3]; 
+//        document.getElementById("L_06").value = parseInt(lamp_config[0]['values'][0][4]);
+//        document.getElementById("L_07").value = parseInt(lamp_config[0]['values'][0][5]);
     }
     catch (err)
     {
@@ -505,25 +707,10 @@ function GetTempFanConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
-        xhr.open('GET', 'boxer.db', true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function(){
-            var uInt8Array = new Uint8Array(xhr.response);
-            var db = new sql.Database(uInt8Array);
-
-            var temp_fan_config  = db.exec("SELECT * FROM TEMP_FAN_CONFIG");
-
-    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-            document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
-            document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
-            document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
-            document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
-            TempControlMode();
-            db.close();
-        }
-        
-        xhr.send(null); 
+//        document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
+//        document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
+//        document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
+//        document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
     }
     catch (err)
     {
@@ -544,31 +731,17 @@ function GetAdvancedConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
-        xhr.open('GET', 'boxer.db', true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function(){
-            var uInt8Array = new Uint8Array(xhr.response);
-            var db = new sql.Database(uInt8Array);
+ 
+//            var dhcpMode = parseInt(advanced_config[0]['values'][0][0]);
+//            document.getElementById("N_01").value = dhcpMode;
+//            
+//            if (dhcpMode == 1)
+//            {
+//                document.getElementById("N_02").value = advanced_config[0]['values'][0][1];
+//                document.getElementById("N_03").value = advanced_config[0]['values'][0][2];
+//                document.getElementById("N_04").value = advanced_config[0]['values'][0][3]; 
+//            }
 
-            var advanced_config  = db.exec("SELECT * FROM ADVANCED_CONFIG");
-
-    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-            var dhcpMode = parseInt(advanced_config[0]['values'][0][0]);
-            document.getElementById("N_01").value = dhcpMode;
-            
-            if (dhcpMode == 1)
-            {
-                document.getElementById("N_02").value = advanced_config[0]['values'][0][1];
-                document.getElementById("N_03").value = advanced_config[0]['values'][0][2];
-                document.getElementById("N_04").value = advanced_config[0]['values'][0][3]; 
-            }
-            
-            DhcpMode();
-            db.close();
-        }
-        
-        xhr.send(null); 
     }
     catch (err)
     {
@@ -588,30 +761,16 @@ function GetMeasurements()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        
-        xhr.open('GET', 'boxer.db', true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function(){
-            var uInt8Array = new Uint8Array(xhr.response);
-            var db = new sql.Database(uInt8Array);
 
-            var basic_meas  = db.exec("SELECT * FROM BASIC_MEAS ORDER BY TIMELOCAL DESC Limit 1");
-            var ph_meas     = db.exec("SELECT * FROM PH_MEAS ORDER BY TIMELOCAL DESC Limit 1");
+//        document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
+//        document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
+//        document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
+//        document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
+//        document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
+//        document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
+//        document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
+//        document.getElementById("M_08").value = basic_meas[0]['values'][0][5]; 
 
-    //        contents is now [{columns:['col1','col2',...], values:[[first row], [second row], ...]}]
-
-            document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
-            document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
-            document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
-            document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
-            document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
-            document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
-            document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
-            document.getElementById("M_08").value = basic_meas[0]['values'][0][5]; 
-            db.close();
-        }
-        
-        xhr.send(null); 
     }
     catch (err)
     {
@@ -637,14 +796,14 @@ function OnTempFanLoad()
 function OnIndexLoad()
 {
     TimeDateUpdate();
-    //GetMeasurements();
+    GetMeasurements();
     timeDateTimer = setInterval('TimeDateUpdate()', 1000 );
-    //getMeasurementsTimer = setInterval('GetMeasurements()', 3000 );
+    getMeasurementsTimer = setInterval('GetMeasurements()', 3000 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function OnLampLoad()
 {
-    //GetLampConfig();
+    GetLampConfig();
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function LightStateCheckBox()
