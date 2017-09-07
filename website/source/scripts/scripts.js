@@ -823,12 +823,12 @@ function GetMeasurements()
 
         var url = "GetMeas";
         xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
+        xhr.setRequestHeader("Content-type", "text/plain");
+        xhr.
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState == 4 && xhr.status == 201) 
             {
                 console.log("GetMeas respose OK\r\n");
                 console.log(xhr.responseText+"\r\n");
