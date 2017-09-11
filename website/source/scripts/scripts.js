@@ -821,30 +821,39 @@ function GetMeasurements()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
 
-        var url = "GetMeas";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "text/plain");
-        xhr.
-        xhr.onreadystatechange = function() 
+        xhr.open("POST", "GetMeas", true);
+        xhr.setRequestHeader("Content-Type", "text/plain;");
+        xhr.responseType = "text";
+        xhr.overrideMimeType("text/plain; charset=UTF-8");
+        xhr.timeout = 5000;
+        
+        xhr.ontimeout = function () 
+        {
+            console.log("XMLHttprequest response timeout!\r\n");
+        };
+
+        xhr.onreadystatechange = function()
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 201) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) 
             {
                 console.log("GetMeas respose OK\r\n");
-                console.log(xhr.responseText+"\r\n");
+                console.log(xhr.responseText);
+                var responseSplit = xhr.responseText.split("\r\n");
+                
+                document.getElementById("M_01").value = parseInt(responseSplit[0]);
+                document.getElementById("M_02").value = parseInt(responseSplit[1]);
+                document.getElementById("M_03").value = parseFloat(responseSplit[2]);
+                document.getElementById("M_04").value = parseFloat(responseSplit[3]);
+                document.getElementById("M_05").value = parseFloat(responseSplit[4]);
+                document.getElementById("M_06").value = parseFloat(responseSplit[5]);
+                document.getElementById("M_07").value = parseFloat(responseSplit[6]);
+                document.getElementById("M_08").value = responseSplit[7];
+        
                 xhr = null;
             }
         };
         xhr.send(null); 
-//        document.getElementById("M_01").value = parseInt(basic_meas[0]['values'][0][0]);
-//        document.getElementById("M_02").value = parseInt(basic_meas[0]['values'][0][1]);
-//        document.getElementById("M_03").value = parseInt(basic_meas[0]['values'][0][2]);
-//        document.getElementById("M_04").value = parseInt(basic_meas[0]['values'][0][3]);
-//        document.getElementById("M_05").value = parseInt(basic_meas[0]['values'][0][4]);
-//        document.getElementById("M_06").value = parseFloat(ph_meas[0]['values'][0][0]);
-//        document.getElementById("M_07").value = parseFloat(ph_meas[0]['values'][0][1]);
-//        document.getElementById("M_08").value = basic_meas[0]['values'][0][5]; 
-
     }
     catch (err)
     {
