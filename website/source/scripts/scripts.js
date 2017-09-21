@@ -9,7 +9,7 @@ function TempControlMode()
     var Lvl1 = document.getElementById("Lvl1");
     var Lvl2 = document.getElementById("Lvl2");
 
-    if (tempMode == 0)
+    if (tempMode === 1)
     {
         Lvl1.style.display = 'none';
         Lvl2.style.display = 'block';
@@ -28,7 +28,7 @@ function DhcpMode()
     var subnetMask  = document.getElementById("N_03");
     var gateway     = document.getElementById("N_04");
 
-    if (dchpMode == 0)
+    if (dchpMode === 1)
     {
         ipAddr.disabled     = true;
         subnetMask.disabled = true;
@@ -76,7 +76,7 @@ function ResetFactorySettings()
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) 
             {
                 xhr = null;
                 console.log("FactoryDef respose OK\r\n");
@@ -111,7 +111,7 @@ function ResetDevice()
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) 
             {
                 xhr = null;
                 console.log("Reset respose OK\r\n");
@@ -211,7 +211,7 @@ function SaveNetworkSettings()
             xhr.onreadystatechange = function() 
             {
                 //Call a function when the state changes.
-                if (xhr.readyState == 4 && xhr.status == 200) 
+                if (xhr.readyState === xhr.DONE && xhr.status === 200) 
                 {
                     xhr = null;
                     console.log("SaveNetwork respose OK\r\n");
@@ -317,7 +317,7 @@ function SaveLightSettings()
                 xhr.onreadystatechange = function() 
                 {
                     //Call a function when the state changes.
-                    if (xhr.readyState == 4 && xhr.status == 200) 
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) 
                     {
                         xhr = null;
                         console.log("SaveLamp respose OK\r\n");
@@ -415,7 +415,7 @@ function SaveTempFanSettings()
             xhr.onreadystatechange = function() 
             {
                 //Call a function when the state changes.
-                if (xhr.readyState == 4 && xhr.status == 200) 
+                if (xhr.readyState === xhr.DONE && xhr.status === 200) 
                 {
                     xhr = null;
                     console.log("SaveTempFan respose OK\r\n");
@@ -508,7 +508,7 @@ function SaveIrrigationSettings()
             xhr.onreadystatechange = function() 
             {
                 //Call a function when the state changes.
-                if (xhr.readyState == 4 && xhr.status == 200) 
+                if (xhr.readyState === xhr.DONE && xhr.status === 200) 
                 {
                     xhr = null;
                     console.log("SaveIrr respose OK\r\n");
@@ -591,7 +591,7 @@ function CalibrateProbe()
             xhr.onreadystatechange = function() 
             {
                 //Call a function when the state changes.
-                if (xhr.readyState == 4 && xhr.status == 200) 
+                if (xhr.readyState === xhr.DONE && xhr.status === 200) 
                 {
                     xhr = null;
                     console.log("SaveCalibPh respose OK\r\n");
@@ -642,17 +642,30 @@ function GetIrrigationConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
                
-        var url = "GetIrr";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
+        xhr.open("POST", "GetIrr", true);
+        xhr.setRequestHeader("Content-Type", "text/plain;");
+        xhr.responseType = "text";
+        xhr.overrideMimeType("text/plain; charset=UTF-8");
+        xhr.timeout = 5000;
+        
+        xhr.ontimeout = function () 
+        {
+            console.log("XMLHttprequest response timeout!\r\n");
+        };
+        
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200)  
             {
                 console.log("GetIrr respose OK\r\n");
                 console.log(xhr.responseText+"\r\n");
+                var responseSplit = xhr.responseText.split("\r\n");
+                document.getElementById("I_01").value = parseInt(responseSplit[0]);
+                document.getElementById("I_02").value = parseInt(responseSplit[1]);
+                document.getElementById("I_03").value = parseInt(responseSplit[2]);
+                document.getElementById("I_04").value = responseSplit[3];
+                IrrigationMode();
                 xhr = null;
             }
         };
@@ -677,45 +690,54 @@ function GetLampConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
-        var url = "GetLamp";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.open("POST", "GetLamp", true);
+        xhr.setRequestHeader("Content-Type", "text/plain;");
+        xhr.responseType = "text";
+        xhr.overrideMimeType("text/plain; charset=UTF-8");
+        xhr.timeout = 5000;
 
+        xhr.ontimeout = function () 
+        {
+            console.log("XMLHttprequest response timeout!\r\n");
+        };
+        
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) 
             {
                 console.log("GetLamp respose OK\r\n");
                 console.log(xhr.responseText+"\r\n");
+                var responseSplit = xhr.responseText.split("\r\n");
+                document.getElementById("L_01").value = parseInt(responseSplit[0]);
+                document.getElementById("L_02").value = parseInt(responseSplit[1]);
+
+                var state = parseInt(responseSplit[2]);
+
+                switch (state)
+                {
+                case 0:
+                    document.getElementById("L_03").disabled = true;
+                    document.getElementById("L_04").checked = true;
+                    break;
+
+                case 1:
+                    document.getElementById("L_03").checked = true;
+                    document.getElementById("L_04").disabled = true;                
+                    break;
+
+                default:
+                    break;
+                }
+
+                document.getElementById("L_05").value = responseSplit[3]; 
+                document.getElementById("L_06").value = parseInt(responseSplit[4]);
+                document.getElementById("L_07").value = parseInt(responseSplit[5]);  
+                LightStateCheckBox();
                 xhr = null;
             }
         };
         xhr.send(null);
-//        document.getElementById("L_01").value = parseInt(lamp_config[0]['values'][0][0]);
-//        document.getElementById("L_02").value = parseInt(lamp_config[0]['values'][0][1]);
-//
-//        var state = parseInt(lamp_config[0]['values'][0][2]);
-//
-//        switch (state)
-//        {
-//        case 0:
-//            document.getElementById("L_03").disabled = true;
-//            document.getElementById("L_04").checked = true;
-//            break;
-//
-//        case 1:
-//            document.getElementById("L_03").checked = true;
-//            document.getElementById("L_04").disabled = true;                
-//            break;
-//
-//        default:
-//            break;
-//        }
-//
-//        document.getElementById("L_05").value = lamp_config[0]['values'][0][3]; 
-//        document.getElementById("L_06").value = parseInt(lamp_config[0]['values'][0][4]);
-//        document.getElementById("L_07").value = parseInt(lamp_config[0]['values'][0][5]);
     }
     catch (err)
     {
@@ -735,27 +757,36 @@ function GetTempFanConfig()
         {
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-         
-        var url = "GetTempFan";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
+        xhr.open("POST", "GetTempFan", true);
+        xhr.setRequestHeader("Content-Type", "text/plain;");
+        xhr.responseType = "text";
+        xhr.overrideMimeType("text/plain; charset=UTF-8");
+        xhr.timeout = 5000;
+        
+        xhr.ontimeout = function () 
+        {
+            console.log("XMLHttprequest response timeout!\r\n");
+        };
+        
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) 
             {
                 console.log("GetTempFan respose OK\r\n");
                 console.log(xhr.responseText+"\r\n");
+                var responseSplit = xhr.responseText.split("\r\n");
+                document.getElementById("T_01").value = parseInt(responseSplit[0]);
+                document.getElementById("T_04").value = parseInt(responseSplit[1]);
+                document.getElementById("T_03").value = parseInt(responseSplit[2]);
+                document.getElementById("T_02").value = parseFloat(responseSplit[3]);
+                TempControlMode();
                 xhr = null;
             }
         };
-        xhr.send(null);  
         
-//        document.getElementById("T_01").value = parseInt(temp_fan_config[0]['values'][0][0]);
-//        document.getElementById("T_04").value = parseInt(temp_fan_config[0]['values'][0][1]);
-//        document.getElementById("T_03").value = parseInt(temp_fan_config[0]['values'][0][2]);
-//        document.getElementById("T_02").value = parseFloat(temp_fan_config[0]['values'][0][3]);
+        xhr.send(null);  
     }
     catch (err)
     {
@@ -776,31 +807,35 @@ function GetAdvancedConfig()
             xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
         
-        var url = "GetAdvanced";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
+        xhr.open("POST", "GetAdvanced", true);
+        xhr.setRequestHeader("Content-Type", "text/plain;");
+        xhr.responseType = "text";
+        xhr.overrideMimeType("text/plain; charset=UTF-8");
+        xhr.timeout = 5000;
+        
+        xhr.ontimeout = function () 
+        {
+            console.log("XMLHttprequest response timeout!\r\n");
+        };
+        
         xhr.onreadystatechange = function() 
         {
             //Call a function when the state changes.
-            if (xhr.readyState == 4 && xhr.status == 200) 
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) 
             {
                 console.log("GetAdvanced respose OK\r\n");
                 console.log(xhr.responseText+"\r\n");
+                
+                var responseSplit = xhr.responseText.split("\r\n");
+                document.getElementById("N_01").value = parseInt(responseSplit[0]);
+                document.getElementById("N_02").value = responseSplit[1];
+                document.getElementById("N_03").value = responseSplit[2];
+                document.getElementById("N_04").value = responseSplit[3]; 
+                DhcpMode();
                 xhr = null;
             }
         };
         xhr.send(null); 
-//            var dhcpMode = parseInt(advanced_config[0]['values'][0][0]);
-//            document.getElementById("N_01").value = dhcpMode;
-//            
-//            if (dhcpMode == 1)
-//            {
-//                document.getElementById("N_02").value = advanced_config[0]['values'][0][1];
-//                document.getElementById("N_03").value = advanced_config[0]['values'][0][2];
-//                document.getElementById("N_04").value = advanced_config[0]['values'][0][3]; 
-//            }
-
     }
     catch (err)
     {
@@ -849,7 +884,7 @@ function GetMeasurements()
                 document.getElementById("M_06").value = parseFloat(responseSplit[5]);
                 document.getElementById("M_07").value = parseFloat(responseSplit[6]);
                 document.getElementById("M_08").value = responseSplit[7];
-        
+                IrrigationMode();
                 xhr = null;
             }
         };
