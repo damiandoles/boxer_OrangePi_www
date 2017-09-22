@@ -9,7 +9,7 @@ function TempControlMode()
     var Lvl1 = document.getElementById("Lvl1");
     var Lvl2 = document.getElementById("Lvl2");
 
-    if (tempMode === 1)
+    if (tempMode == 1)
     {
         Lvl1.style.display = 'none';
         Lvl2.style.display = 'block';
@@ -28,7 +28,7 @@ function DhcpMode()
     var subnetMask  = document.getElementById("N_03");
     var gateway     = document.getElementById("N_04");
 
-    if (dchpMode === 1)
+    if (dchpMode == 1)
     {
         ipAddr.disabled     = true;
         subnetMask.disabled = true;
