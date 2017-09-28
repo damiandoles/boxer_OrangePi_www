@@ -381,8 +381,6 @@ function SaveTempFanSettings()
             {
                 document.getElementById("T_02Error").innerHTML = "";
             }
-            pushFanPower = "--";
-            pullFanPower = "--";
             break;
             
         default:
@@ -440,22 +438,10 @@ function SaveIrrigationSettings()
     var irrFreq = parseInt(document.getElementById("I_03").value, 10);
     var startTime = document.getElementById("I_04").value;
     
-    switch (irrMode)
+    dataError = CheckIrrWaterAmount(waterAmount);
+    
+    if (irrMode == "2")
     {
-    case "0":
-        dataError = CheckIrrWaterAmount(waterAmount);
-        irrFreq = "--";
-        startTime = "--";
-        break;
-
-    case "1":
-        dataError = CheckIrrWaterAmount(waterAmount);
-        irrFreq = "--";
-        startTime = "--";
-        break;
-
-    case "2":
-        dataError = CheckIrrWaterAmount(waterAmount);
         if (isNaN(irrFreq) || irrFreq < 0 || irrFreq > 7) //days
         {
             dataError = true;
@@ -474,12 +460,7 @@ function SaveIrrigationSettings()
         else
         {
             document.getElementById("I_04Error").innerHTML = "";
-        }
-        break;
-
-    default:
-        dataError = true;
-        break;
+        }        
     }
     
     if (!dataError)
