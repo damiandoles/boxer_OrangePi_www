@@ -857,15 +857,70 @@ function GetMeasurements()
                 console.log(xhr.responseText);
                 var responseSplit = xhr.responseText.split("\r\n");
                 
-                document.getElementById("M_01").value = parseInt(responseSplit[0]);
-                document.getElementById("M_02").value = parseInt(responseSplit[1]);
-                document.getElementById("M_03").value = parseFloat(responseSplit[2]);
-                document.getElementById("M_04").value = parseFloat(responseSplit[3]);
-                document.getElementById("M_05").value = parseFloat(responseSplit[4]);
-                document.getElementById("M_06").value = parseFloat(responseSplit[5]);
-                document.getElementById("M_07").value = parseFloat(responseSplit[6]);
+                if (responseSplit[0] == " - - -")
+                {
+                    document.getElementById("M_01").value = "- - -";
+                }
+                else
+                {
+                    document.getElementById("M_01").value = parseInt(responseSplit[0]);
+                }
+                
+                if (responseSplit[1] == "- - -")
+                {
+                    document.getElementById("M_02").value = responseSplit[1];
+                }
+                else
+                {
+                    document.getElementById("M_02").value = parseInt(responseSplit[1]);
+                }
+
+                if (responseSplit[2] == "- - -")
+                {
+                    document.getElementById("M_03").value = responseSplit[2];
+                }
+                else
+                {
+                    document.getElementById("M_03").value = parseFloat(responseSplit[2]);
+                }
+
+                if (responseSplit[3] == "- - -")
+                {
+                    document.getElementById("M_04").value = responseSplit[3];
+                }
+                else
+                {
+                    document.getElementById("M_04").value = parseFloat(responseSplit[3]);
+                }
+
+                if (responseSplit[4] == "- - -")
+                {
+                    document.getElementById("M_05").value = responseSplit[4];
+                }
+                else
+                {
+                    document.getElementById("M_05").value = parseFloat(responseSplit[4]);
+                }
+
+                if (responseSplit[5] == "- - -")
+                {
+                    document.getElementById("M_06").value = responseSplit[5];
+                }
+                else
+                {
+                    document.getElementById("M_06").value = parseFloat(responseSplit[5]);
+                }
+
+                if (responseSplit[6] == "- - -")
+                {
+                    document.getElementById("M_07").value = responseSplit[6];
+                }
+                else
+                {
+                    document.getElementById("M_07").value = parseFloat(responseSplit[6]);
+                }
+
                 document.getElementById("M_08").value = responseSplit[7];
-                IrrigationMode();
                 xhr = null;
             }
         };
