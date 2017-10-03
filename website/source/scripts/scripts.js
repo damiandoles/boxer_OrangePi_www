@@ -235,7 +235,9 @@ function SaveLightSettings()
     var timeOff  = parseInt(document.getElementById("L_02").value, 10);
     var stateOn  = document.getElementById("L_03").checked;
     var stateOff = document.getElementById("L_04").checked;
-    var turnOnOffTime = document.getElementById("L_05").value;
+    var startNow = document.getElementById("L_05").checked;
+    var startAtTime = document.getElementById("L_06").checked;
+    var turnOnOffTime = document.getElementById("L_07").value;
     
     if (timeOn < 0 || timeOn > 24 || isNaN(timeOn))
     {
@@ -267,14 +269,24 @@ function SaveLightSettings()
         document.getElementById("stateError").innerHTML = "";
     }
     
-    if (!CheckShortTime(turnOnOffTime))
+    if (!startNow && !startAtTime)
     {
         dataError = true;
-        document.getElementById("L_05Error").innerHTML = "&nbsp;Wrong turn on/off time!";
+        document.getElementById("startModeError").innerHTML = "&nbsp;&nbsp;&nbsp;Check start mode!";
     }
     else
     {
-        document.getElementById("L_05Error").innerHTML = "";
+        document.getElementById("startModeError").innerHTML = "";
+    }
+    
+    if (!CheckShortTime(turnOnOffTime))
+    {
+        dataError = true;
+        document.getElementById("L_07Error").innerHTML = "&nbsp;Wrong turn on/off time!";
+    }
+    else
+    {
+        document.getElementById("L_07Error").innerHTML = "";
     }
     
     if (!dataError)
@@ -284,7 +296,7 @@ function SaveLightSettings()
             // zapis do urzadzenia
             //state: 0 - off, 1 - on
             var initState;
-            if (stateOn == true & stateOff == false)
+            if (stateOn && !stateOff)
             {
                 initState = 1;
             }
@@ -292,7 +304,18 @@ function SaveLightSettings()
             {
                 initState = 0;
             }
-
+            
+            //start: 0 - now, 1 - at time
+            var startMode;
+            if (startNow && !startAtTime)
+            {
+                startMode = 0;
+            }
+            else
+            {
+                startMode = 1;
+            }
+            
             try
             {
                 if (window.XMLHttpRequest) //every browsers without IE 
@@ -309,6 +332,7 @@ function SaveLightSettings()
                     "timeOn="           + timeOn +
                     "&timeOff="         + timeOff +
                     "&initState="       + initState +
+                    "&startMode="       + startMode +
                     "&turnOnOffTime="   + turnOnOffTime;
                 
                 xhr.open("POST", url, true);
@@ -694,7 +718,6 @@ function GetLampConfig()
                 document.getElementById("L_02").value = parseInt(responseSplit[1]);
 
                 var state = parseInt(responseSplit[2]);
-
                 switch (state)
                 {
                 case 0:
@@ -711,10 +734,28 @@ function GetLampConfig()
                     break;
                 }
 
-                document.getElementById("L_05").value = responseSplit[3]; 
-                document.getElementById("L_06").value = parseInt(responseSplit[4]);
-                document.getElementById("L_07").value = parseInt(responseSplit[5]);  
+                var startMode = parseInt(responseSplit[3]);
+                switch (startMode)
+                {
+                case 1:
+                    document.getElementById("L_05").disabled = true;
+                    document.getElementById("L_06").checked = true;
+                    break;
+
+                case 0:
+                    document.getElementById("L_05").checked = true;
+                    document.getElementById("L_06").disabled = true;                
+                    break;
+
+                default:
+                    break;
+                }
+                
+                document.getElementById("L_07").value = responseSplit[4]; 
+                document.getElementById("L_08").value = parseInt(responseSplit[5]);
+                document.getElementById("L_09").value = parseInt(responseSplit[6]);  
                 LightStateCheckBox();
+                LightStartModeCheckBox();
                 xhr = null;
             }
         };
@@ -958,6 +999,38 @@ function OnIndexLoad()
 function OnLampLoad()
 {
     GetLampConfig();
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+function LightStartModeCheckBox()
+{
+    var startNow  = document.getElementById("L_05");
+    var startAtTime = document.getElementById("L_06");  
+    var startTime = document.getElementById("L_07");
+    
+    if (startNow.checked)
+    {
+        startAtTime.disabled = true;
+        startTime.disabled = true;
+    }
+    else
+    {
+        startAtTime.disabled = false;
+        startTime.disabled = false;
+    }
+    
+    if (startAtTime.checked)
+    {
+        startNow.disabled = true;
+    }
+    else
+    {
+        startNow.disabled = false;
+    }
+    
+    if (!startNow.checked && !startAtTime.checked)
+    {
+        startTime.disabled = true;
+    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 function LightStateCheckBox()

@@ -69,9 +69,22 @@
                         </div>
                     </div>
                     <div>
-                        <div class="levelingCol"><label id="labelTurnOnOffTime">Turn on/off time:</label></div>
-                        <div class="levelingCol"><input id="L_05" type="text" size=4 maxlength="6"></div>
-                        <div class="levelingCol"><span class="edError" id="L_05Error">&nbsp;</span></div>
+                        <div class="levelingCol"><label id="labelStartMode">Start mode:</label></div>
+                        <div class="levelingCol"><span class="edError" style="margin-left: 87px;" id="startModeError">&nbsp;</span></div>
+                    </div>
+                    <div>
+                        <div class="levelingCol"><label id="labelStartNow">now</label></div>
+                        <div class="levelingCol">
+                            <input id="L_05" onclick="LightStartModeCheckBox()" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="levelingCol"><label id="labelStartAtTime">at time</label></div>
+                        <div class="levelingCol">
+                            <input id="L_06" onclick="LightStartModeCheckBox()" style="border: medium none; background: rgb(255, 255, 255) none repeat scroll 0% 0%;" type="checkbox">
+                        </div>
+                        <div class="levelingCol"><input id="L_07" type="text" size=4 maxlength="6"></div>
+                        <div class="levelingCol"><span class="edError" id="L_07Error">&nbsp;</span></div>
                     </div>
                 </div>
                 <input type="button" style="margin-left:0px;" value="Save" id="SaveLightButton" onClick="SaveLightSettings()"><font color="green" id="SaveLightLabel">&nbsp;</font>
@@ -82,11 +95,11 @@
                 <div class="levelingTable">
                     <div>
                         <div class="levelingCol"><label id="labelLightCounter">Light counter:</label></div>
-                        <div class="levelingCol"><input disabled id="L_06" type="text" size=3 maxlength="2"></div>
+                        <div class="levelingCol"><input disabled id="L_08" type="text" size=3 maxlength="2"></div>
                     </div>
                     <div>
                         <div class="levelingCol"><label id="labelLightIntensity">Light state:</label></div>
-                        <div class="levelingCol"><input disabled id="L_07" type="text" size=3 maxlength="3"></div>
+                        <div class="levelingCol"><input disabled id="L_09" type="text" size=3 maxlength="3"></div>
                     </div>
                 </div>
             </fieldset>	
